@@ -1,0 +1,827 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"mo",
+				"mousePos"
+			],
+			[
+				"p",
+				"prototype	{}"
+			],
+			[
+				"add",
+				"addChild	(?)"
+			],
+			[
+				"pro",
+				"prototype	(?)"
+			],
+			[
+				"help",
+				"helpScreen	(?)"
+			],
+			[
+				"main",
+				"mainGoat	(?)"
+			],
+			[
+				"stage",
+				"stageX"
+			],
+			[
+				"spa",
+				"spawnNewGoat"
+			],
+			[
+				"resu",
+				"resultsScreen"
+			],
+			[
+				"STATE",
+				"STATE_RUNNING"
+			],
+			[
+				"start",
+				"startScreen"
+			],
+			[
+				"addCh",
+				"addChild"
+			],
+			[
+				"og",
+				"ogBounds"
+			],
+			[
+				"get",
+				"getBounds"
+			],
+			[
+				"sc",
+				"scaleX"
+			],
+			[
+				"move",
+				"moveLeft"
+			],
+			[
+				"fal",
+				"false"
+			],
+			[
+				"this",
+				"thisBounds"
+			],
+			[
+				"true",
+				"trueGoat"
+			],
+			[
+				"new",
+				"newPoint"
+			],
+			[
+				"y",
+				"y"
+			],
+			[
+				"proto",
+				"prototype"
+			],
+			[
+				"tower",
+				"towerGoat"
+			],
+			[
+				"towergo",
+				"towerGoats"
+			],
+			[
+				"fall",
+				"fallingGoats"
+			],
+			[
+				"spri",
+				"spriteOffsetY"
+			],
+			[
+				"sprite",
+				"spriteOffsetX"
+			],
+			[
+				"STATE_",
+				"STATE_END"
+			],
+			[
+				"time",
+				"timeLeft"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "/C/Users/admin_wiper/Documents/lbac/src/horf/TriangulationMath.as",
+			"settings":
+			{
+				"buffer_size": 11789,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "triMath.js",
+			"settings":
+			{
+				"buffer_size": 545,
+				"line_ending": "Windows",
+				"name": "function"
+			}
+		},
+		{
+			"file": "index.html",
+			"settings":
+			{
+				"buffer_size": 1376,
+				"line_ending": "Windows",
+				"name": "<html>"
+			}
+		},
+		{
+			"file": "/C/Users/admin_wiper/Documents/aaa/test.html",
+			"settings":
+			{
+				"buffer_size": 13763,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/C/Users/admin_wiper/Documents/lbac/src/horf/Polygon.as",
+			"settings":
+			{
+				"buffer_size": 211,
+				"line_ending": "Windows"
+			}
+		}
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 380.0,
+		"selected_items":
+		[
+			[
+				"git",
+				"Github: Repository"
+			],
+			[
+				"package",
+				"Package Control: Install Package"
+			],
+			[
+				"project",
+				"Project: Add Folder"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 400.0
+	},
+	"console":
+	{
+		"height": 125.0
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/C/wamp/www/bin-releaes/main.js",
+		"/C/Users/admin_wiper/Documents/twd/AMCWalkingDead/lib/UnisonClient/Unison/core/network/Command_Response.as",
+		"/C/Users/admin_wiper/Documents/twd/AMCWalkingDead/lib/UnisonClient/Unison/core/network/Command_Wrapper.as",
+		"/C/Users/admin_wiper/Documents/twd/AMCWalkingDead/lib/UnisonClient/Unison/core/network/AMFGateway.as",
+		"/C/wamp/www/compiled.js",
+		"/C/wamp/www/r.js",
+		"/C/Users/admin_wiper/Downloads/index.html",
+		"/C/wamp/www/main.js",
+		"/C/wamp/www/libs/propertyParser.js",
+		"/C/wamp/www/libs/font.js",
+		"/C/wamp/www/views/helpScreen.js",
+		"/C/wamp/www/goat.js",
+		"/C/wamp/www/views/resultsScreen.js",
+		"/C/wamp/www/require.js",
+		"/C/wamp/www/animations.js",
+		"/C/wamp/www/index2.html",
+		"/C/wamp/www/index.html",
+		"/C/Users/admin_wiper/Documents/twd/AMCWalkingDead/bin-debug/AMCWalkingDeadLocal.html",
+		"/C/Users/admin_wiper/Documents/twd/server/config/prod/config.php",
+		"/C/wamp/www/examples/easeljs/spooktacular/src/SimpleParticle.js",
+		"/C/wamp/www/examples/easeljs/spooktacular/config/spooktacular_game.xml",
+		"/C/Users/admin_wiper/Documents/aaa/test.html",
+		"/C/Users/admin_wiper/Downloads/test.html",
+		"/C/wamp/bin/apache/apache2.4.9/conf/httpd.conf",
+		"/C/Users/admin_wiper/Documents/aaa/goat.js",
+		"/C/wamp/www/examples/easeljs/hello_world/css/page_styles.css",
+		"/C/wamp/www/examples/easeljs/hello_world/css/crosswords.css",
+		"/C/wamp/www/examples/easeljs/hello_world/src/MyGame.js",
+		"/C/wamp/www/examples/easeljs/spooktacular/src/Spooktacular.js",
+		"/C/wamp/www/examples/easeljs/spooktacular/src/SpooktacularCard.js",
+		"/C/wamp/www/examples/easeljs/spooktacular/src/SpooktacularHelp.js",
+		"/C/wamp/www/examples/easeljs/spooktacular/src/PlayerCardsArea.js",
+		"/C/wamp/www/examples/easeljs/spooktacular/src/ScratchItem.js",
+		"/C/wamp/www/examples/easeljs/hello_world/config/startup.xml",
+		"/C/wamp/www/examples/easeljs/hello_world/config/my_game.xml",
+		"/C/wamp/www/examples/easeljs/spooktacular/src/LegendArea.js",
+		"/C/wamp/www/examples/easeljs/spooktacular/src/LegendItem.js",
+		"/C/wamp/www/examples/easeljs/spooktacular/src/SpooktacularSpace.js",
+		"/C/wamp/www/examples/easeljs/spooktacular/index.html",
+		"/C/wamp/www/examples/easeljs/spooktacular/config/startup.xml",
+		"/C/wamp/www/examples/easeljs/spooktacular/css/page_styles.css",
+		"/C/wamp/www/examples/easeljs/spooktacular/css/spooktacular.css",
+		"/C/wamp/www/examples/easeljs/hello_world/src/Button.js",
+		"/C/wamp/www/examples/easeljs/hello_world/src/MyOutro.js",
+		"/C/wamp/www/examples/easeljs/hello_world/config/sample_outcome_data.xml",
+		"/C/Users/admin_wiper/Documents/stg/gdk_js_0.0.51a/examples/easeljs/hello_world/src/MyGame.js",
+		"/C/Users/admin_wiper/Documents/stg/gdk_js_0.0.51a/examples/easeljs/hello_world/index.html",
+		"/C/wamp/www/examples/easeljs/spooktacular/src/Button.js",
+		"/C/Users/admin_wiper/Documents/stg/gdk_js_0.0.51a/examples/easeljs/spooktacular/config/startup.xml",
+		"/C/Windows/System32/drivers/etc/hosts",
+		"/C/Users/admin_wiper/Documents/twd/AMCWalkingDead/bin-debug/resources/xml/tracking.xml",
+		"/C/Users/admin_wiper/Documents/twd/AMCWalkingDead/bin-debug/resources/xml/amcRewards.json",
+		"/C/Users/admin_wiper/Documents/twd/AMCWalkingDead/bin-debug/resources/xml/assets/viewAssets.xml",
+		"/C/Users/admin_wiper/Documents/twd/AMCWalkingDead/bin-debug/resources/xml/assets/xmlManifest.json",
+		"/C/Users/admin_wiper/Documents/twd/AMCWalkingDead/bin-debug/resources/xml/rareWalkers.json",
+		"/C/Users/admin_wiper/Documents/aaa/program.js",
+		"/C/Users/admin_wiper/Documents/twd/server/frontend/templates/page_canvas.tpl",
+		"/C/Users/admin_wiper/Documents/twd/server/backend/backend_flashGateway.php",
+		"/C/Users/admin_wiper/Documents/twd/server/libs/UnisonServer_4_0/unison/managers/unison_userManager.php",
+		"/C/Users/admin_wiper/Documents/twd/AMCWalkingDead/bin-debug/resources/xml/weapons.json",
+		"/C/Users/admin_wiper/Documents/twd/AMCWalkingDead/bin-debug/resources/xml/store/catalog.xml",
+		"/C/Users/admin_wiper/Documents/twd/AMCWalkingDead/bin-debug/resources/xml/clothingThemes.xml",
+		"/C/Users/admin_wiper/Documents/twd/AMCWalkingDead/bin-debug/resources/xml/AMCREWARDSDROPTABLE.JSON",
+		"/C/Users/admin_wiper/Documents/twd/AMCWalkingDead/bin-debug/resources/xml/zombieScaling.json",
+		"/C/Users/admin_wiper/Documents/twd/AMCWalkingDead/bin-debug/resources/xml/zombieAnimationSets.xml",
+		"/C/Users/admin_wiper/Documents/twd/server/config/dev/config.php",
+		"/C/Users/admin_wiper/Documents/twd/server/config/qa/config.php",
+		"/C/Users/admin_wiper/Documents/twd/server/config/sand1/config.php",
+		"/C/Users/admin_wiper/Documents/twd/server/config/sand2/config.php",
+		"/C/Users/admin_wiper/Documents/twd/server/config/sand3/config.php",
+		"/C/Users/admin_wiper/Documents/twd/server/config/sand4/config.php",
+		"/C/Users/admin_wiper/Documents/twd/server/config/staging/config.php",
+		"/C/Users/admin_wiper/Documents/twd/AMCWalkingDead/bin-debug/resources/images/news/2grenades_featured.png",
+		"/C/Users/admin_wiper/Documents/twd/server/libs/kontagent/kontagent_facebook.php",
+		"/C/Users/admin_wiper/Documents/twd/server/frontend/html/kt_landing.php",
+		"/C/Users/admin_wiper/Documents/twd/server/libs/UnisonServer_4_0/unison/facebook/core/fbi_login.php",
+		"/C/Users/admin_wiper/Documents/twd/server/libs/UnisonServer_4_0/unison/facebook/core/fbi_base.php",
+		"/C/Users/admin_wiper/Documents/twd/server/frontend/templates/page_canvas_base.tpl",
+		"/C/Users/admin_wiper/Documents/twd/server/libs/UnisonServer_4_0/unison/smarty_templating/templates/page_base.tpl",
+		"/C/Users/admin_wiper/Documents/twd/server/frontend/html/index.php",
+		"/C/Users/admin_wiper/Documents/twd/server/libs/UnisonServer_4_0/unison/smarty_templating/controller.php",
+		"/C/Users/admin_wiper/Documents/twd/server/frontend/php/kontagent.php",
+		"/C/Users/admin_wiper/Documents/twd/server/frontend/html/static/scripts/kontagent_facebook.js",
+		"/C/Users/admin_wiper/Documents/twd/tools/csTool/libs/UnisonServer_4_0/unison/smarty_templating/controller.php",
+		"/C/Users/admin_wiper/Documents/twd/server/libs/UnisonServer_4_0/unison/facebook/fbi_gateway.php",
+		"/C/Users/admin_wiper/Documents/twd/server/libs/amfphp-2.0/Core/Amf/Deserializer.php",
+		"/C/Users/admin_wiper/Documents/twd/server/frontend/html/debug/backend_tests.php",
+		"/C/Users/admin_wiper/Documents/twd/server/frontend/html/debug/getUserData.php",
+		"/C/Users/admin_wiper/Documents/twd/server/frontend/html/debug/clearUserData.php",
+		"/C/Users/admin_wiper/Documents/twd/server/libs/UnisonServer_4_0/unison/gifting/giftingSystem.php",
+		"/C/Users/admin_wiper/Documents/twd/server/libs/UnisonServer_4_0/unison/facebook/core/fbi_userData.php",
+		"/C/cygwin64/unison_userManager.php",
+		"/C/Users/admin_wiper/Documents/twd/server/libs/UnisonServer_4_0/unison/proxies/tables/unison_table_user.php",
+		"/C/Users/admin_wiper/Documents/twd/server/libs/UnisonServer_4_0/unison/managers/unison_storeManager.php",
+		"/C/Users/admin_wiper/Documents/twd/server/libs/UnisonServer_4_0/unison/gifting/userinfo.php",
+		"/C/Users/admin_wiper/Documents/twd/server/frontend/php/sprint.php",
+		"/C/Users/admin_wiper/Documents/twd/server/libs/UnisonServer_4_0/unison/core/unison_flashGateway.php",
+		"/C/Users/admin_wiper/Documents/twd/server/libs/UnisonServer_4_0/unison/core/unison_checkSummer.php",
+		"/C/Users/admin_wiper/Documents/twd/server/libs/UnisonServer_4_0/unison/core/unison_gateway.php",
+		"/C/Users/admin_wiper/Documents/twd/AMCWalkingDead/src/tracking/KontagentTracker.as",
+		"/C/Users/admin_wiper/Documents/twd/tools/csTool/backend/managers/UserManager.php",
+		"/C/Users/admin_wiper/Documents/twd/server/frontend/templates/comp_footer.tpl",
+		"/C/Users/admin_wiper/Documents/twd/AMCWalkingDead/bin-debug/resources/xml/arenaMetadata.json",
+		"/C/Users/admin_wiper/Documents/twd/server/frontend/html/static/styles/custom_style.css",
+		"/C/Users/admin_wiper/Documents/twd/AMCWalkingDead/bin-debug/resources/xml/config.xml",
+		"/C/Users/admin_wiper/Documents/twd/AMCWalkingDead/bin-debug/resources/xml/rewards.xml",
+		"/C/Users/admin_wiper/Documents/twd/AMCWalkingDead/bin-debug/config.xml",
+		"/C/Users/admin_wiper/Desktop/onboardingDatas/3_after accept mission",
+		"/C/Users/admin_wiper/Desktop/onboardingDatas/4_after accept side mission",
+		"/C/Users/admin_wiper/Desktop/onboardingDatas/9_after sharing friend kill",
+		"/C/Users/admin_wiper/Desktop/onboardingDatas/8_after pick up second gas can",
+		"/C/Users/admin_wiper/Desktop/onboardingDatas/7_after pick up first gas can",
+		"/C/Users/admin_wiper/Desktop/onboardingDatas/6_after hide behind truck",
+		"/C/Users/admin_wiper/Desktop/onboardingDatas/5_after equip boost",
+		"/C/Users/admin_wiper/Desktop/onboardingDatas/10_after squat by car",
+		"/C/Users/admin_wiper/Desktop/onboardingDatas/11_after striking zombie",
+		"/C/Users/admin_wiper/Desktop/onboardingDatas/12_after use med kit",
+		"/C/Users/admin_wiper/Desktop/onboardingDatas/14_completed mission but didn't go back to camp yet",
+		"/C/Users/admin_wiper/Desktop/onboardingDatas/15_completed side mission 1 but didnt return to camp",
+		"/C/Users/admin_wiper/Desktop/onboardingDatas/16_completed side mission 2 but didnt return to camp",
+		"/C/Users/admin_wiper/Desktop/onboardingDatas/17_entered story mission 2",
+		"/C/Users/admin_wiper/Desktop/onboardingDatas/13_before striking zombie",
+		"/C/Users/admin_wiper/Desktop/onboardingDatas/18_inside replay version of c1m1",
+		"/C/Users/admin_wiper/Desktop/onboardingDatas/19_inside replay version of c1m1 with 2 characters",
+		"/C/Users/admin_wiper/Desktop/onboardingDatas/20_just before enter map area 1",
+		"/C/Users/admin_wiper/Desktop/onboardingDatas/21_just entered map area 1",
+		"/C/Users/admin_wiper/Desktop/onboardingDatas/22_just entered mission",
+		"/C/Users/admin_wiper/Desktop/onboardingDatas/23_just starting overworld onboarding"
+	],
+	"find":
+	{
+		"height": 34.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+			"",
+			"twd/server",
+			"/server",
+			"server",
+			"server/config",
+			"server/",
+			"server/config/",
+			"AMCWalkingDead/src/",
+			"server/",
+			"server/config/"
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": true,
+		"find_history":
+		[
+			"deb",
+			"timeLeft",
+			"simulationContainer",
+			"stage",
+			"timeLeftText",
+			"topHud",
+			"startScreen",
+			"Lato",
+			"helpScreen",
+			";",
+			"Container",
+			"Goat",
+			"simple",
+			";\n",
+			"pregame",
+			"30",
+			"currentState = ",
+			";\n",
+			"collision",
+			"70",
+			".sprite",
+			"statusBar",
+			"status",
+			"audio",
+			"simple",
+			"audio",
+			"\n						towerGoats.push(goat);",
+			"goodGoats",
+			"towerGoats",
+			"speed",
+			"this.",
+			");\n",
+			"groundImg",
+			"{\"frame",
+			"xml/fb",
+			"onboarindg",
+			"'3.10.31';",
+			"sun",
+			"moon",
+			"_sendHttpRequestViaImgTag",
+			"'3.10.30';",
+			"clientStartup_facebook",
+			"clientstartup",
+			"'3.10.29';",
+			"'3.10.28';",
+			"'3.10.27';",
+			"trackUserInformation",
+			"sendMessage",
+			"track",
+			"sendMessage",
+			"cpu",
+			"$fbService =",
+			"fbService",
+			"FacebookIntegration_Base",
+			"getFacebookID",
+			"Templating::assignValue(\"fbUserID\"",
+			"$fbUserID",
+			"page_base",
+			"window.FACEBOOK_ID",
+			"window.facebookid",
+			"trackPageRequest",
+			"trackPgr",
+			"trackPgr()",
+			"trackPageRequest",
+			"sendMessage(\"pgr\"",
+			"trackDefaultInformation",
+			"sendMessage(\"cpu\"",
+			"gameLogin",
+			"sendMessage(\"cpu\"",
+			"Kontagent_Analytics::recordPersonalInfo(",
+			"recordPersonalInfo",
+			"loginFacebook",
+			"locale",
+			"redirect",
+			"KontagentUtils.*redirect",
+			"KontagentUtils::redirect",
+			"redirect",
+			"exit()",
+			"'3.10.26';",
+			"'3.10.24';",
+			"'3.10.23';",
+			"locale",
+			"login",
+			"getLoginUrl",
+			"'3.10.22';",
+			"grantProducts",
+			"facebookID",
+			"cold_userIDs",
+			"batchLoadPersonalInfo",
+			"batchLoadFriendData",
+			"clientstartup",
+			"\\n",
+			" ",
+			"[a-z]*",
+			"\\t\\n\\t\\n",
+			"^\\d.*",
+			"([a-z])\\n\\t\\n",
+			"([a-z])\\n\\t",
+			"sendHttpRequest",
+			"kontagentapi",
+			"'3.10.19';",
+			"getFacebookFriendsList",
+			"getFriendsList",
+			"getGameFriendsList",
+			"fbFriendsInfo",
+			"flashvar7",
+			"'3.10.18';",
+			"'3.10.17';",
+			"useTestServer",
+			"sendMessage",
+			"trackUserInformation",
+			"trackCpu",
+			"cpu",
+			"trackUserInformation",
+			"_trackCpu",
+			"trackCpu",
+			"cpu",
+			"'3.10.16';",
+			"cpu",
+			"getUserInfo",
+			"fbUserInfo",
+			"install",
+			"fbUserInfo",
+			"flashvar7",
+			"'3.10.14';",
+			"start",
+			"supplies",
+			"pixelTracking"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"topHud",
+			"resultsScreen",
+			"",
+			"towerGoats",
+			"moveSpeed",
+			"backgroundImage",
+			"",
+			"backgroundImage",
+			"{\"text\":\"asdasdas\",\"frame",
+			"'3.10.32';",
+			"'3.10.31';",
+			"'3.10.30';",
+			"'3.10.29';",
+			"'3.10.28';",
+			"'3.10.27';",
+			"'3.10.24';",
+			"'3.10.23';",
+			" + \\n",
+			"",
+			"\\n",
+			"\\t",
+			"$1 ",
+			"'3.10.20';",
+			"'3.10.19';",
+			"'3.10.18';",
+			"'3.10.17';",
+			"'3.10.15';",
+			"/2{3}/",
+			"2{3}",
+			"'3.10.14';"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 2,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "/C/Users/admin_wiper/Documents/lbac/src/horf/TriangulationMath.as",
+					"settings":
+					{
+						"buffer_size": 11789,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								11781,
+								11781
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/ActionScript/ActionScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 5850.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "triMath.js",
+					"settings":
+					{
+						"buffer_size": 545,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								47,
+								47
+							]
+						],
+						"settings":
+						{
+							"auto_name": "function",
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "index.html",
+					"settings":
+					{
+						"buffer_size": 1376,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								610,
+								610
+							]
+						],
+						"settings":
+						{
+							"auto_name": "<html>",
+							"syntax": "Packages/HTML/HTML.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "/C/Users/admin_wiper/Documents/aaa/test.html",
+					"settings":
+					{
+						"buffer_size": 13763,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								13763,
+								13763
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 7146.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "/C/Users/admin_wiper/Documents/lbac/src/horf/Polygon.as",
+					"settings":
+					{
+						"buffer_size": 211,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/ActionScript/ActionScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 0.0
+	},
+	"input":
+	{
+		"height": 31.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"replace":
+	{
+		"height": 62.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+			[
+				"tracking",
+				"AMCWalkingDead/bin-debug/resources/xml/tracking.xml"
+			],
+			[
+				"amcrew",
+				"AMCWalkingDead/bin-debug/resources/xml/amcRewards.json"
+			],
+			[
+				"amcreward",
+				"AMCWalkingDead/bin-debug/resources/xml/AMCREWARDSDROPTABLE.JSON"
+			],
+			[
+				"amcrewa",
+				"AMCWalkingDead/bin-debug/resources/xml/amcRewards.json"
+			],
+			[
+				"view",
+				"AMCWalkingDead/bin-debug/resources/xml/assets/viewAssets.xml"
+			],
+			[
+				"zombiesca",
+				"AMCWalkingDead/bin-debug/resources/xml/zombieScaling.json"
+			],
+			[
+				"theme",
+				"AMCWalkingDead/bin-debug/resources/xml/clothingThemes.xml"
+			],
+			[
+				"catalog",
+				"AMCWalkingDead/bin-debug/resources/xml/store/catalog.xml"
+			],
+			[
+				"weaon",
+				"AMCWalkingDead/bin-debug/resources/xml/weapons.json"
+			],
+			[
+				"amclocal",
+				"AMCWalkingDead/bin-debug/AMCWalkingDeadLocal.html"
+			],
+			[
+				"config",
+				"server/config/prod/config.php"
+			],
+			[
+				"page_ca",
+				"server/frontend/templates/page_canvas.tpl"
+			],
+			[
+				"controller.php",
+				"server/libs/UnisonServer_4_0/unison/smarty_templating/controller.php"
+			],
+			[
+				"kt_land",
+				"server/frontend/html/kt_landing.php"
+			],
+			[
+				"kontag",
+				"server/libs/kontagent/kontagent_facebook.php"
+			],
+			[
+				"user",
+				"tools/csTool/backend/managers/UserManager.php"
+			],
+			[
+				"konta",
+				"AMCWalkingDead/src/tracking/KontagentTracker.as"
+			],
+			[
+				"weap",
+				"AMCWalkingDead/bin-debug/resources/xml/weapons.json"
+			],
+			[
+				"rewar",
+				"AMCWalkingDead/bin-debug/resources/xml/rewards.xml"
+			],
+			[
+				"confi",
+				"AMCWalkingDead/bin-debug/config.xml"
+			],
+			[
+				"arenametadat",
+				"AMCWalkingDead/bin-debug/resources/xml/arenaMetadata.json"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"selected_items":
+		[
+			[
+				"",
+				"/C/wamp/www/mobileJS.sublime-project"
+			]
+		],
+		"width": 380.0
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 296.0,
+	"status_bar_visible": true
+}

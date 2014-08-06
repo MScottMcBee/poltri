@@ -1,0 +1,112 @@
+<html>
+<body>
+<script src="triMath.js"></script>
+<div style="width:100%">
+	<div style = "position:relative; width:20%">
+		<canvas id="canvas" width="300" height="300" style="border:1px solid #000000;"> </canvas>
+	</div>
+	<div style = "dispaly:flex; width:20%">
+		<canvas id="canvas2" width="300" height="300" style="border:1px solid #000000;"> </canvas>
+	</div>
+	<div style = "float:relative; width:20%">
+		<canvas id="canvas3" width="300" height="300" style="border:1px solid #000000;"> </canvas>
+		</br>
+		<input>
+		<form type="number"></form>
+		</input>
+	</div>
+</div>
+<script type="text/javascript">
+
+var canvas = document.getElementById('canvas');
+var context = canvas.getContext("2d");
+
+var canvas2 = document.getElementById('canvas2');
+var context2 = canvas2.getContext("2d");
+var canvas3 = document.getElementById('canvas3');
+var context3 = canvas3.getContext("2d");
+
+var rect = canvas.getBoundingClientRect();
+
+var drawnPolygon = [];
+var mousePoint = new Point(0,0);
+var mousedown = false;
+
+
+function tick(){
+
+	if (mousedown){
+		if (drawnPolygon.length == 0){
+			drawnPolygon.push(new Point(mousePoint.x,mousePoint.y));
+		}
+		if (dist(mousePoint,drawnPolygon[drawnPolygon.length-1]) > 10){
+			drawnPolygon.push(new Point(mousePoint.x,mousePoint.y));
+		}
+	}
+
+	if (drawnPolygon.length > 1){
+		draw(context,drawnPolygon,false);
+		draw(context2,drawnPolygon,true);
+		draw(context3,douglasPeucker(drawnPolygon,4),true);
+	}
+}
+
+
+function draw(ctx, arr, drawPoints){
+	ctx.clearRect(0,0,400,400);
+	
+	ctx.strokeStyle = "#00000";
+	ctx.beginPath();
+	ctx.moveTo(arr[0].x,arr[0].y);
+	if (arr.length > 2){
+		for (var i = 1; i < arr.length; i++){
+			ctx.lineTo(arr[i].x,arr[i].y);
+		}
+		if (mousedown){
+			ctx.lineTo(mousePoint.x,mousePoint.y);
+		}else{
+			ctx.lineTo(arr[0].x,arr[0].y);
+		}
+	}
+	ctx.stroke();
+
+	if(drawPoints){
+		ctx.fillStyle = "#ff0000";
+		for (var i = 0; i < arr.length; i++){
+			ctx.fillRect(arr[i].x-2,arr[i].y-2,5,5);
+		}
+	}
+}
+
+function drawLine(p1,p2){
+    ctx.beginPath();
+    ctx.moveTo(p1.x,p1.y);
+    ctx.lineTo(p2.x,p2.y);
+    ctx.stroke();
+}
+
+canvas.addEventListener('mousemove', function(evt) {
+    mousePoint.x = evt.clientX - rect.left;
+    mousePoint.y = evt.clientY - rect.top;
+  }, false);
+
+canvas.addEventListener('mousedown', function(evt) {
+    mousedown = true;
+  }, false);
+
+canvas.addEventListener('mouseup', function(evt) {
+    mousedown = false;
+  }, false);
+
+tick();
+setInterval(tick,16);
+
+
+</script>
+
+</body>
+</html>
+
+
+<html>
+<head>
