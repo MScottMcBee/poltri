@@ -2,24 +2,26 @@
 <body>
 <script src="triMath.js"></script>
 <div style="width:100%">
-	<div style = "position:relative; width:20%">
+	<div style = "margin:10px; clear: none; float: left;">
 		<canvas id="canvas" width="300" height="300" style="border:1px solid #000000;"> </canvas>
 	</div>
-	<div style = "dispaly:flex; width:20%">
+	<div style = "margin:10px; clear: none; float: left;">
 		<canvas id="canvas2" width="300" height="300" style="border:1px solid #000000;"> </canvas>
 	</div>
-	<div style = "float:relative; width:20%">
+	<div style = "margin:10px; clear: none; float: left;">
 		<canvas id="canvas3" width="300" height="300" style="border:1px solid #000000;"> </canvas>
 		</br>
-		<input>
-		<form type="number"></form>
-		</input>
+		
+		<form><input type="range" min=0 max=10 name="epsilon" step=0.1 value=4></input></form>
+		
 	</div>
 </div>
 <script type="text/javascript">
 
 var canvas = document.getElementById('canvas');
 var context = canvas.getContext("2d");
+
+var epsilonSlider = document.getElementById('epsilon');
 
 var canvas2 = document.getElementById('canvas2');
 var context2 = canvas2.getContext("2d");
@@ -97,6 +99,11 @@ canvas.addEventListener('mousedown', function(evt) {
 canvas.addEventListener('mouseup', function(evt) {
     mousedown = false;
   }, false);
+
+
+epsilonSlider.addEventListener('onChange', function(evt) {
+	alert(epsilonSlider.value);
+}, false);
 
 tick();
 setInterval(tick,16);
