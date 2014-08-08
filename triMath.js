@@ -54,7 +54,7 @@ function segmentDistToPoint(p, segA, segB){
 }
 
 function douglasPeucker(points,epsilon){
-	var results = []
+	var results = [];
 	var r1;
 	var r2;
 	var largestDistance = 0;
@@ -68,9 +68,9 @@ function douglasPeucker(points,epsilon){
 	}
 	if ( largestDistance > epsilon ) {
 		r1 = douglasPeucker(points.slice(0,pivotIndex+1), epsilon);
-		r2 = douglasPeucker(points.slice(pivotIndex+1), epsilon);
+		r2 = douglasPeucker(points.slice(pivotIndex), epsilon);
 		
-		results = r1.slice(0,r1.length).concat(r2);
+		results = r1.concat(r2);
 	} else {
 		results.push(points[0]);
 		results.push(points[points.length-1]);
@@ -115,7 +115,7 @@ function visvalingamWhyatt(points,percentage){
 	if (target < 4){
 		target = 4;
 	}
-	console.log(referencePairs.length * percentage + " " + referencePairs.length +" "+ percentage);
+	//console.log(referencePairs.length * percentage + " " + referencePairs.length +" "+ percentage);
 	while (referencePairs.length > target){
 		workingPairs = referencePairs.concat();
 		workingPairs.sort(function(a,b){ return b.distance - a.distance });
