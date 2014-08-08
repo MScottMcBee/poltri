@@ -79,77 +79,77 @@ function douglasPeucker(points,epsilon){
 }
 
 function visvalingamWhyatt(points,percentage){
-	var referencePairs = [];
-	var workingPairs = [];
+	var referenceTriangles = [];
+	var workingTriangles = [];
 	var results = [];
-	for (var i = 0; i < points.length - 2; i++) {
+	var i;
+	var vwTriangle;
 
-
-		var vwPair = uuuuuuu(points[i],points[i+1],points[i+2])
-		if(vwPair){
-			referencePairs.push(vwPair);
+	for (i = 0; i < points.length - 2; i++) {
+		var vwTriangle = createVWTriangle(points[i],points[i+1],points[i+2])
+		if(vwTriangle){
+			referenceTriangles.push(vwTriangle);
 		}
 	}
-	
-	function uuuuuuu(a,b,c){
-		var base = dist(a,c);
-		var height = segmentDistToPoint(b,a,c);
-		var temp = {}
-		var d = base*height/2;
 		
-		if (d != NaN){
-			temp.distance = d;
-			temp.point = b;
-			temp.order = i+1;
-			return temp;
-		}
-		console.log("!!!!!!!")
-		console.log(a.x+" "+a.y)
-		console.log(b.x+" "+b.y)
-		console.log(c.x+" "+c.y)
-		console.log("AAA "+d+" "+base+" "+height+" "+a+" "+b+" "+c);
-		return null;
+	var targetPointCount = referenceTriangles.length * percentage;
+	if (targetPointCount < 3){
+		targetPointCount = 3;
 	}
-	
-	var target = referencePairs.length * percentage;
-	if (target < 4){
-		target = 4;
-	}
-	//console.log(referencePairs.length * percentage + " " + referencePairs.length +" "+ percentage);
-	while (referencePairs.length > target){
-		workingPairs = referencePairs.concat();
-		workingPairs.sort(function(a,b){ return b.distance - a.distance });
-		var referenceIndex = referencePairs.indexOf(workingPairs[workingPairs.length-1]);
-		workingPairs = workingPairs.splice(0,workingPairs.length-1);
-		referencePairs.splice(referenceIndex,1);
+
+	while (referenceTriangles.length > targetPointCount){
+		workingTriangles = referenceTriangles.concat();
+		workingTriangles.sort(function(a,b){ return b.distance - a.distance });
+		var referenceIndex = referenceTriangles.indexOf(workingTriangles[workingTriangles.length-1]);
+		workingTriangles = workingTriangles.splice(0,workingTriangles.length-1);
+		referenceTriangles.splice(referenceIndex,1);
 		
-		if (referenceIndex == referencePairs.length){
+		if (referenceIndex == referenceTriangles.length){
 			referenceIndex = 0;
 		}
 		var relRefInd1 = referenceIndex-2;
 		var relRefInd2 = referenceIndex-1;
 		if (relRefInd1 < 0){
-			relRefInd1+=referencePairs.length;
+			relRefInd1+=referenceTriangles.length;
 		}
 		if (relRefInd2 < 0){
-			relRefInd2+=referencePairs.length;
+			relRefInd2+=referenceTriangles.length;
 		}
-		referencePairs[relRefInd2] = uuuuuuu(referencePairs[relRefInd1].point,referencePairs[relRefInd2].point,referencePairs[referenceIndex].point);
+		referenceTriangles[relRefInd2] = createVWTriangle(referenceTriangles[relRefInd1].point,referenceTriangles[relRefInd2].point,referenceTriangles[referenceIndex].point);
 		
 		var relRefInd1 = referenceIndex-1;
 		var relRefInd2 = referenceIndex+1;
 		if (relRefInd1 < 0){
-			relRefInd1+=referencePairs.length;
+			relRefInd1+=referenceTriangles.length;
 		}
-		if (relRefInd2 >= referencePairs.length){
-			relRefInd2-=referencePairs.length;
+		if (relRefInd2 >= referenceTriangles.length){
+			relRefInd2-=referenceTriangles.length;
 		}
 		
-		referencePairs[referenceIndex] = uuuuuuu(referencePairs[relRefInd1].point,referencePairs[referenceIndex].point,referencePairs[relRefInd2].point);
+		referenceTriangles[referenceIndex] = createVWTriangle(referenceTriangles[relRefInd1].point,referenceTriangles[referenceIndex].point,referenceTriangles[relRefInd2].point);
 	}
-	for (i = 0; i < referencePairs.length; i++) {
-		sfp = referencePairs[i]
-		results.push(sfp.point);
+
+	for (i = 0; i < referenceTriangles.length; i++) {
+		results.push(referenceTriangles[i].point);
 	}
+
 	return results;
+
+
+	function createVWTriangle(p1,p2,p3){
+		var base = dist(p1,p3);
+		var height = segmentDistToPoint(p2,p1,p3);
+		var newVWTriangle = {};
+		var area = base*height/2;
+		
+		if (area != NaN){
+			newVWTriangle.distance = area;
+			newVWTriangle.point = p2;
+			newVWTriangle.order = i+1;
+			return newVWTriangle;
+		}
+		console.log("Bad VWTriangle!");
+		return null;
+	}
+
 }
