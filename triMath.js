@@ -77,3 +77,79 @@ function douglasPeucker(points,epsilon){
 	}
 	return results;
 }
+
+function visvalingamWhyatt(points,percentage){
+	var referencePairs = [];
+	var workingPairs = [];
+	var results = [];
+	for (var i = 0; i < points.length - 2; i++) {
+
+
+		var vwPair = uuuuuuu(points[i],points[i+1],points[i+2])
+		if(vwPair){
+			referencePairs.push(vwPair);
+		}
+	}
+	
+	function uuuuuuu(a,b,c){
+		var base = dist(a,c);
+		var height = segmentDistToPoint(b,a,c);
+		var temp = {}
+		var d = base*height/2;
+		
+		if (d != NaN){
+			temp.distance = d;
+			temp.point = b;
+			temp.order = i+1;
+			return temp;
+		}
+		console.log("!!!!!!!")
+		console.log(a.x+" "+a.y)
+		console.log(b.x+" "+b.y)
+		console.log(c.x+" "+c.y)
+		console.log("AAA "+d+" "+base+" "+height+" "+a+" "+b+" "+c);
+		return null;
+	}
+	
+	var target = referencePairs.length * percentage;
+	if (target < 4){
+		target = 4;
+	}
+	console.log(referencePairs.length * percentage + " " + referencePairs.length +" "+ percentage);
+	while (referencePairs.length > target){
+		workingPairs = referencePairs.concat();
+		workingPairs.sort(function(a,b){ return b.distance - a.distance });
+		var referenceIndex = referencePairs.indexOf(workingPairs[workingPairs.length-1]);
+		workingPairs = workingPairs.splice(0,workingPairs.length-1);
+		referencePairs.splice(referenceIndex,1);
+		
+		if (referenceIndex == referencePairs.length){
+			referenceIndex = 0;
+		}
+		var relRefInd1 = referenceIndex-2;
+		var relRefInd2 = referenceIndex-1;
+		if (relRefInd1 < 0){
+			relRefInd1+=referencePairs.length;
+		}
+		if (relRefInd2 < 0){
+			relRefInd2+=referencePairs.length;
+		}
+		referencePairs[relRefInd2] = uuuuuuu(referencePairs[relRefInd1].point,referencePairs[relRefInd2].point,referencePairs[referenceIndex].point);
+		
+		var relRefInd1 = referenceIndex-1;
+		var relRefInd2 = referenceIndex+1;
+		if (relRefInd1 < 0){
+			relRefInd1+=referencePairs.length;
+		}
+		if (relRefInd2 >= referencePairs.length){
+			relRefInd2-=referencePairs.length;
+		}
+		
+		referencePairs[referenceIndex] = uuuuuuu(referencePairs[relRefInd1].point,referencePairs[referenceIndex].point,referencePairs[relRefInd2].point);
+	}
+	for (i = 0; i < referencePairs.length; i++) {
+		sfp = referencePairs[i]
+		results.push(sfp.point);
+	}
+	return results;
+}
