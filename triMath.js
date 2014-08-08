@@ -85,13 +85,22 @@ function visvalingamWhyatt(points,percentage){
 	var i;
 	var vwTriangle;
 
+	vwTriangle = createVWTriangle(points[points.length-1],points[0],points[1]);
+	if(vwTriangle){
+		referenceTriangles.push(vwTriangle);
+	}
 	for (i = 0; i < points.length - 2; i++) {
-		var vwTriangle = createVWTriangle(points[i],points[i+1],points[i+2])
+		vwTriangle = createVWTriangle(points[i],points[i+1],points[i+2]);
 		if(vwTriangle){
 			referenceTriangles.push(vwTriangle);
 		}
 	}
-		
+	vwTriangle = createVWTriangle(points[points.length-2],points[points.length-1],points[0]);
+	if(vwTriangle){
+		referenceTriangles.push(vwTriangle);
+	}
+
+
 	var targetPointCount = referenceTriangles.length * percentage;
 	if (targetPointCount < 3){
 		targetPointCount = 3;
