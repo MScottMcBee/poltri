@@ -1,22 +1,42 @@
 <html>
+<style>
+ #container{
+ 	width:970px;
+ 	text-align: center;
+ }
+ .elm{
+ 	text-align: center;
+ 	float: left;
+ 	margin:10px;
+ }
+ .first{
+
+ 	width:970px;
+ 	clear:left;
+ }
+</style>
 <body>
 <script src="triMath.js"></script>
 
-<div style="width:100%">
-	<div style = "margin:10px; clear: none; float: left;">
+<div id="container">
+
+
+	<div class="elm first">
 		Draw
 		</br>
-		<canvas id="canvas" width="300" height="300" style="border:1px solid #000000;"> </canvas>
+		<canvas id="canvas0" width="300" height="300" style="border:1px solid #000000;"> </canvas>
 	</div>
-	<div style = "margin:10px; clear: none; float: left;">
+
+	<div class="elm">
 		No reduction
 		</br>
-		<canvas id="canvas2" width="300" height="300" style="border:1px solid #000000;"> </canvas>
+		<canvas id="canvas1" width="300" height="300" style="border:1px solid #000000;"> </canvas>
 	</div>
-	<div style = "margin:10px; clear: none; float: left;">
+
+	<div class="elm">
 		Douglas-Peucker
 		</br>
-		<canvas id="canvas3" width="300" height="300" style="border:1px solid #000000;"> </canvas>
+		<canvas id="canvas2" width="300" height="300" style="border:1px solid #000000;"> </canvas>
 		</br>
 		</br>
 		
@@ -24,35 +44,64 @@
 		
 	</div>
 
-	<div style = "margin:10px; clear: none; float: left;">
+	<div class="elm">
 		Visvalingam-Whyatt
 		</br>
-		<canvas id="canvas4" width="300" height="300" style="border:1px solid #000000;"> </canvas>
+		<canvas id="canvas3" width="300" height="300" style="border:1px solid #000000;"> </canvas>
 		</br>
 		</br>
 		
 		<form><input type="range" min=0 max=1 id="percent" step=0.01 value=0.60></input><label id="percentLabel" value="">aaaa</label></form>
 		
 	</div>
+
+
+	<div class="elm">
+		No reduction
+		</br>
+		<canvas id="canvas4" width="300" height="300" style="border:1px solid #000000;"> </canvas>
+	</div>
+
+	<div class="elm">
+		Douglas-Peucker
+		</br>
+		<canvas id="canvas5" width="300" height="300" style="border:1px solid #000000;"> </canvas>
+		
+	</div>
+
+	<div class="elm">
+		Visvalingam-Whyatt
+		</br>
+		<canvas id="canvas6" width="300" height="300" style="border:1px solid #000000;"> </canvas>
+		
+	</div>
+
+<!-- 	<div>
+		No reduction Monotone
+		</br>
+		<canvas id="canvas5" width="300" height="300" style="border:1px solid #000000;"> </canvas>
+		
+	</div> -->
+
 </div>
 
 <script type="text/javascript">
 
-var canvas = document.getElementById('canvas');
-var context = canvas.getContext("2d");
+var canvases = [];
+var contexts = [];
 
-var canvas2 = document.getElementById('canvas2');
-var context2 = canvas2.getContext("2d");
+for (var i = 0; i < 7; i++){
+	canvases[i] = document.getElementById('canvas'+i);
+	contexts[i] = canvases[i] .getContext("2d");
+}
 
-var canvas3 = document.getElementById('canvas3');
-var context3 = canvas3.getContext("2d");
+var rect = canvases[0].getBoundingClientRect();
 
-var canvas4 = document.getElementById('canvas4');
-var context4 = canvas4.getContext("2d");
+window.onscroll = function (event) {
+	rect = canvases[0].getBoundingClientRect();
+}
 
-var rect = canvas.getBoundingClientRect();
-
-var drawnPolygon = [];
+var startingPolygon = [];
 var mousePoint = new Point(0,0);
 var mousedown = false;
 
@@ -70,47 +119,70 @@ var canDraw = true;
 function tick(){
 
 	if (mousedown && canDraw){
-		if (drawnPolygon.length == 0){
-			drawnPolygon.push(new Point(mousePoint.x,mousePoint.y));
+		if (startingPolygon.length == 0){
+			startingPolygon.push(new Point(mousePoint.x,mousePoint.y));
 		}
-		if (dist(mousePoint,drawnPolygon[drawnPolygon.length-1]) > 10){
-			drawnPolygon.push(new Point(mousePoint.x,mousePoint.y));
+		if (dist(mousePoint,startingPolygon[startingPolygon.length-1]) > 10){
+			startingPolygon.push(new Point(mousePoint.x,mousePoint.y));
 		}
 	}
 
-	if (drawnPolygon.length > 1){
-		draw(context,drawnPolygon,false);
-		draw(context2,drawnPolygon,true);
-		draw(context3,douglasPeucker(drawnPolygon,epsilonSlider.value),true);
-		draw(context4,visvalingamWhyatt(drawnPolygon,percentSlider.value),true);
+	if (startingPolygon.length > 1){
+		var dpPolygon = douglasPeucker(startingPolygon,epsilonSlider.value);
+		var vwPolygon = visvalingamWhyatt(startingPolygon,percentSlider.value);
+
+
+		drawPolygons(contexts[0],[startingPolygon],false);
+		drawPolygons(contexts[1],[startingPolygon],true);
+		drawPolygons(contexts[2],[dpPolygon],true);
+		drawPolygons(contexts[3],[vwPolygon],true);
+		var monotonePolygons = [];
+		var dpMonotonePolygons = [];
+		var vwMonotonePolygons = [];
+
+		recursiveSplit(startingPolygon,monotonePolygons);
+		drawPolygons(contexts[4],monotonePolygons,true);
+
+		recursiveSplit(dpPolygon,dpMonotonePolygons);
+		drawPolygons(contexts[5],dpMonotonePolygons,true);
+
+		recursiveSplit(vwPolygon,vwMonotonePolygons);
+		drawPolygons(contexts[6],vwMonotonePolygons,true);
+
 	}
 	epsilonLabel.innerHTML = "Epsilon: "+epsilonSlider.value;
 	percentLabel.innerHTML = "Percent: "+percentSlider.value;
 }
 
 
-function draw(ctx, arr, drawPoints){
-	ctx.clearRect(0,0,400,400);
-	
-	ctx.strokeStyle = "#00000";
-	ctx.beginPath();
-	ctx.moveTo(arr[0].x,arr[0].y);
-	if (arr.length > 2){
-		for (var i = 1; i < arr.length; i++){
-			ctx.lineTo(arr[i].x,arr[i].y);
-		}
-		if (mousedown && canDraw){
-			ctx.lineTo(mousePoint.x,mousePoint.y);
-		}else{
-			ctx.lineTo(arr[0].x,arr[0].y);
-		}
-	}
-	ctx.stroke();
+function drawPolygons(ctx, polygons, drawPoints){
+	var i;
+	var j; 
 
-	if(drawPoints){
-		ctx.fillStyle = "#ff0000";
-		for (var i = 0; i < arr.length; i++){
-			ctx.fillRect(arr[i].x-2,arr[i].y-2,5,5);
+	ctx.clearRect(0,0,400,400);	
+	ctx.strokeStyle = "#00000";
+
+	for (var i = 0; i < polygons.length; i++){
+		var polygon = polygons[i];
+		ctx.beginPath();
+		ctx.moveTo(polygon[0].x,polygon[0].y);
+		if (polygon.length > 2){
+			for (j = 1; j < polygon.length; j++){
+				ctx.lineTo(polygon[j].x,polygon[j].y);
+			}
+			if (mousedown && canDraw){
+				ctx.lineTo(mousePoint.x,mousePoint.y);
+			}else{
+				ctx.lineTo(polygon[0].x,polygon[0].y);
+			}
+		}
+		ctx.stroke();
+
+		if(drawPoints){
+			ctx.fillStyle = "#ff0000";
+			for (j = 0; j < polygon.length; j++){
+				ctx.fillRect(polygon[j].x-2,polygon[j].y-2,5,5);
+			}
 		}
 	}
 }
@@ -122,18 +194,23 @@ function drawLine(p1,p2){
     ctx.stroke();
 }
 
-canvas.addEventListener('mousemove', function(evt) {
+canvases[0].addEventListener('mousemove', function(evt) {
     mousePoint.x = evt.clientX - rect.left;
     mousePoint.y = evt.clientY - rect.top;
   }, false);
 
-canvas.addEventListener('mousedown', function(evt) {
+canvases[0].addEventListener('mousedown', function(evt) {
     mousedown = true;
   }, false);
 
-canvas.addEventListener('mouseup', function(evt) {
+canvases[0].addEventListener('mouseup', function(evt) {
     mousedown = false;
-    canDraw = false;
+    if (canDraw){
+  //   	var sp = startingPolygon;
+  //   	var dp = douglasPeucker(sp,epsilonSlider.value);
+		// recursiveSplit(dp,nrMonotonePolygons);
+		canDraw = false;
+	}
   }, false);
 
 tick();

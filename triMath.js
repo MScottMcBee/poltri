@@ -70,7 +70,7 @@ function douglasPeucker(points,epsilon){
 		r1 = douglasPeucker(points.slice(0,pivotIndex+1), epsilon);
 		r2 = douglasPeucker(points.slice(pivotIndex), epsilon);
 		
-		results = r1.concat(r2);
+		results = r1.concat(r2.slice(1));
 	} else {
 		results.push(points[0]);
 		results.push(points[points.length-1]);
@@ -161,4 +161,176 @@ function visvalingamWhyatt(points,percentage){
 		return null;
 	}
 
+}
+
+function recursiveSplit(polygon,output){
+	var divided = splitSimplePolygon(polygon);
+	if (divided.length > 1){
+		var polygonA = divided[0];
+		var polygonB = divided[1];
+		
+		recursiveSplit(polygonA,output);
+		recursiveSplit(polygonB,output);
+		
+	}else{
+		output.push(polygon);
+	}
+}
+
+
+function splitSimplePolygon(polygon){
+	
+	var scanningVerticies = polygon.slice();
+	scanningVerticies.sort(function (a,b){
+		return a.x-b.x;
+	});
+	
+	for (var i = 1; i < scanningVerticies.length-1 ; i++){
+		var index = polygon.indexOf(scanningVerticies[i]);
+		var nextIndex = index+1;
+		if (nextIndex>=polygon.length){
+			nextIndex = 0;
+		}
+		var lastIndex = index-1;
+		if (lastIndex<0){
+			lastIndex = polygon.length-1;
+		}
+		
+		var subdivide = false;
+		var direction = 0;
+		
+		if (polygon[lastIndex].x > polygon[index].x){
+			if (polygon[nextIndex].x> polygon[index].x){
+				subdivide = true;
+				direction = -1;
+			}
+		}else if (polygon[lastIndex].x < polygon[index].x){
+			if (polygon[nextIndex].x < polygon[index].x){
+				subdivide = true;
+				direction = 1;
+			}
+		}
+		
+		var xxIndex = i;
+		while (subdivide){
+			var doit = validEdge(polygon,scanningVerticies,i,xxIndex+direction);
+			if (doit){
+				return splitPolygon(polygon,scanningVerticies,i,xxIndex+direction);
+			}else{
+				xxIndex += direction;
+				if (xxIndex < 0 || xxIndex >= scanningVerticies.length){
+					subdivide = false;
+				}
+			}
+		}
+	}
+	var results = [];
+	results.push(polygon);
+	return results;
+}
+
+
+// This determins if the "cut" in the polygon is valid. An example of an invalid cut would be on that is outside of the polygon, 
+// or one where the two points are adjacent on the polygon.
+function validEdge(polygon,sortedVerticies,baseIndex,checkingIndex){
+	// If we're out of bounds, it's not valid
+	if (checkingIndex >= sortedVerticies.length || checkingIndex < 0){
+		return false;
+	}
+	
+	var pointX = {x:sortedVerticies[baseIndex].x, y:sortedVerticies[baseIndex].y};
+	var pointY = {x:sortedVerticies[checkingIndex].x, y:sortedVerticies[checkingIndex].y};
+
+	//If the edge is the line segment that closes the polygon, it's not valid.
+	if ((pointEquals(polygon[0],pointX) || pointEquals(polygon[polygon.length-1],pointX)) && (pointEquals(polygon[0],pointY) || pointEquals(polygon[polygon.length-1],pointY))){
+		return false;
+	}
+	
+	for (var k = 0; k < polygon.length-1; k++){
+		var doIntersect = true;
+		
+		if ((pointEquals(polygon[k], pointX) || pointEquals(polygon[k+1], pointX)) && (pointEquals(polygon[k], pointY) || pointEquals(polygon[k+1], pointY))){
+			return false;
+		}
+
+		if (pointEquals(polygon[k], pointX) || pointEquals(polygon[k+1], pointX) || pointEquals(polygon[k], pointY) || pointEquals(polygon[k+1], pointY)){
+			doIntersect = false;
+		}
+		if (doIntersect && doesLineIntersect(polygon[k],polygon[k+1],pointX,pointY)){
+			return false;
+		}
+	}
+	
+	var origin = {x:0,y:0};
+	var testPoint = {};
+	var count;
+	count = 0;
+	for (var h = 0; h < polygon.length ; h++){
+		var offset = h+1;
+		if (offset >=  polygon.length){
+			offset=0;
+		}
+		
+		testPoint.x = pointX.x+((pointY.x-pointX.x)/2);
+		testPoint.y = pointX.y+((pointY.y-pointX.y)/2);
+		if (doesLineIntersect(polygon[h],polygon[offset],origin,testPoint)){
+			count++;
+		}
+	}
+	
+	if (count%2==0){
+		return false;
+	}
+	if (checkingIndex >= sortedVerticies.length-1){
+		return false;
+	}
+	if (checkingIndex < 0){
+		return false;
+	}
+	return true;
+}
+
+function pointEquals(a,b){
+	return a.x == b.x && a.y == b.y;
+}
+
+function splitPolygon(polygon,sortedVerticies,indexA,indexB){
+	var results = [];
+	var splittingIndex;
+
+	splittingIndex = polygon.indexOf(sortedVerticies[indexA]);
+	var pointBB = polygon.indexOf(sortedVerticies[indexB]);
+	
+	var polygonA = [];
+	polygonA.push(polygon[splittingIndex]);
+	while (splittingIndex!=pointBB){
+		splittingIndex += 1;
+		if (splittingIndex > polygon.length-1){
+			splittingIndex = 0;
+		}
+		polygonA.push(polygon[splittingIndex]);
+	}
+	
+	var polygonB = [];
+	
+	splittingIndex = polygon.indexOf(sortedVerticies[indexA]);
+	polygonB.push(polygon[splittingIndex]);
+	while (splittingIndex!=pointBB){
+		splittingIndex -= 1;
+		if (splittingIndex < 0){
+			splittingIndex = polygon.length-1;
+		}
+		polygonB.push(polygon[splittingIndex]);
+	}
+	
+	if (polygonA.length){
+		results.push(polygonA);
+	}
+	
+	if (polygonB.length){
+		results.push(polygonB);
+	}
+	
+	return results;
+	
 }
