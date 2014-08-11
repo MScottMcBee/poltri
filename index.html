@@ -1,8 +1,12 @@
 <html>
 <style>
  #container{
- 	width:970px;
+ 	width:100%;
  	text-align: center;
+ }
+  #containerInner{
+ 	width: 970px;
+    margin: 0 auto;
  }
  .elm{
  	text-align: center;
@@ -19,7 +23,7 @@
 <script src="triMath.js"></script>
 
 <div id="container">
-
+<div id="containerInner">
 
 	<div class="elm first">
 		Draw
@@ -76,6 +80,26 @@
 		
 	</div>
 
+	<div class="elm">
+		No reduction
+		</br>
+		<canvas id="canvas7" width="300" height="300" style="border:1px solid #000000;"> </canvas>
+	</div>
+
+	<div class="elm">
+		Douglas-Peucker
+		</br>
+		<canvas id="canvas8" width="300" height="300" style="border:1px solid #000000;"> </canvas>
+		
+	</div>
+
+	<div class="elm">
+		Visvalingam-Whyatt
+		</br>
+		<canvas id="canvas9" width="300" height="300" style="border:1px solid #000000;"> </canvas>
+		
+	</div>
+
 <!-- 	<div>
 		No reduction Monotone
 		</br>
@@ -84,13 +108,14 @@
 	</div> -->
 
 </div>
+</div>
 
 <script type="text/javascript">
 
 var canvases = [];
 var contexts = [];
 
-for (var i = 0; i < 7; i++){
+for (var i = 0; i < 10; i++){
 	canvases[i] = document.getElementById('canvas'+i);
 	contexts[i] = canvases[i] .getContext("2d");
 }
@@ -149,6 +174,27 @@ function tick(){
 		recursiveSplit(vwPolygon,vwMonotonePolygons);
 		drawPolygons(contexts[6],vwMonotonePolygons,true);
 
+
+		var tris = [];
+		for (var i = 0; i < monotonePolygons.length; i++){			
+			triangulateMonotonePolygon(monotonePolygons[i],tris);
+		}
+		drawPolygons(contexts[7],tris,true);
+
+
+		var tris = [];
+		for (var i = 0; i < dpMonotonePolygons.length; i++){			
+			triangulateMonotonePolygon(dpMonotonePolygons[i],tris);
+		}
+		drawPolygons(contexts[8],tris,true);
+
+
+		var tris = [];
+		for (var i = 0; i < vwMonotonePolygons.length; i++){			
+			triangulateMonotonePolygon(vwMonotonePolygons[i],tris);
+		}
+		drawPolygons(contexts[9],tris,true);
+
 	}
 	epsilonLabel.innerHTML = "Epsilon: "+epsilonSlider.value;
 	percentLabel.innerHTML = "Percent: "+percentSlider.value;
@@ -162,7 +208,7 @@ function drawPolygons(ctx, polygons, drawPoints){
 	ctx.clearRect(0,0,400,400);	
 	ctx.strokeStyle = "#00000";
 
-	for (var i = 0; i < polygons.length; i++){
+	for (i = 0; i < polygons.length; i++){
 		var polygon = polygons[i];
 		ctx.beginPath();
 		ctx.moveTo(polygon[0].x,polygon[0].y);

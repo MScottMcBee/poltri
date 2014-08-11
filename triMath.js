@@ -334,3 +334,156 @@ function splitPolygon(polygon,sortedVerticies,indexA,indexB){
 	return results;
 	
 }
+
+function triangulateMonotonePolygon(polygon,triangles){
+	if (polygon.length == 3){
+		triangles.push(polygon);
+		return;
+	}
+	
+	var track1 = [];
+	var track2 = [];
+	
+	var scanningVerticies = polygon.slice();
+	scanningVerticies.sort(function (A,B){
+		return A.x-B.x;
+	});
+	
+	var midPointIndex = (polygon.length/2) | 0;
+	
+	for (var i = 0; i != midPointIndex; i++){
+		track1.push(polygon[i]);
+	}
+	for (var i = polygon.length-1; i != midPointIndex; i--){
+		track2.push(polygon[i]);
+	}
+	track2.push(polygon[midPointIndex]);
+	
+	var stack = [];
+	stack.push(scanningVerticies[0],scanningVerticies[1]);
+	var lastDivide = [];
+	for (var i = 2; i<scanningVerticies.length; i++){
+		var sameTrack = false;
+		if (track1.indexOf(scanningVerticies[i]) > -1){
+			if (track1.indexOf(stack[stack.length-1]) > -1){
+				sameTrack = true;
+			}
+		}else{
+			if (track2.indexOf(stack[stack.length-1]) > -1){
+				sameTrack = true;
+			}
+		}
+		
+		if (i == scanningVerticies.length-1){
+			sameTrack = false;
+		}
+		
+		
+		if (sameTrack){
+			var lastDivide;
+			for (var j = i+1; j<scanningVerticies.length; j++){
+				if (validEdge(polygon,scanningVerticies,i,j)){
+					var results = splitPolygon(polygon,scanningVerticies,i,j);
+					
+					if (results.length>0){
+						if (results[0].length==3){
+							triangles.push(results[0])
+						}else{
+							triangulateMonotonePolygon(results[0],triangles);
+						}
+					}
+					if (results.length>1){
+						if (results[1].length==3){
+							triangles.push(results[1])
+						}else{
+							triangulateMonotonePolygon(results[1],triangles);
+						}
+					}
+					return;
+				}else{
+					break;
+				}
+			}
+			stack.push(scanningVerticies[i]);
+		}else{
+			var vTop = stack[stack.length-1];
+			for (var j =0; j<stack.length; j++){
+				var tirIndex = scanningVerticies.indexOf(stack[j]);
+				if (validEdge(polygon,scanningVerticies,i,tirIndex)){
+					stack.slice(j,1);
+					var results = splitPolygon(polygon,scanningVerticies,i,tirIndex);
+					
+					if (results.length>0){
+						if (results[0].length==3){
+							triangles.push(results[0])
+						}else{
+							triangulateMonotonePolygon(results[0],triangles);
+						}
+					}
+					if (results.length>1){
+						if (results[1].length==3){
+							triangles.push(results[1])
+						}else{
+							triangulateMonotonePolygon(results[1],triangles);
+						}
+					}
+					return;
+				}
+				
+			}
+			stack.push(vTop);
+			stack.push(scanningVerticies[i])
+		}
+	}
+	console.log("SCRAMBLE!")
+	for (i = 1; i < scanningVerticies.length; i++){
+		if (validEdge(polygon,scanningVerticies,0,i)){
+			stack.slice(j,1);
+			var results = splitPolygon(polygon,scanningVerticies,0,i);
+			
+			if (results.length>0){
+				if (results[0].length==3){
+					triangles.push(results[0])
+				}else{
+					triangulateMonotonePolygon(results[0],triangles);
+				}
+			}
+			if (results.length>1){
+				if (results[1].length==3){
+					triangles.push(results[1])
+				}else{
+					triangulateMonotonePolygon(results[1],triangles);
+				}
+			}
+			return;
+		}
+	}
+	
+	
+	for (i = 0; i < scanningVerticies.length-1; i++){
+		if (validEdge(polygon,scanningVerticies,scanningVerticies.length-1,i)){
+			stack.slice(j,1);
+			var results = splitPolygon(polygon,scanningVerticies,scanningVerticies.length-1,i);
+			
+			if (results.length>0){
+				if (results[0].length==3){
+					triangles.push(results[0])
+				}else{
+					triangulateMonotonePolygon(results[0],triangles);
+				}
+			}
+			if (results.length>1){
+				if (results[1].length==3){
+					triangles.push(results[1])
+				}else{
+					triangulateMonotonePolygon(results[1],triangles);
+				}
+			}
+			return;
+		}
+	}
+}
+
+function aaaa(){
+
+}
