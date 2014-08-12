@@ -3,111 +3,141 @@
  #container{
  	width:100%;
  	text-align: center;
+ 	color: #b28d93;
+ 	font-family: verdana;
+ 	font-weight: bold;
  }
   #containerInner{
- 	width: 970px;
-    margin: 0 auto;
+ 	width: 1000px;
+    margin: 00 auto;
+
+ 	overflow: hidden;
+ 	background-color: #384063;
+ }
+  .row{
+ 	clear:left;
+ 	width:100%;
+ 	text-align: center;
  }
  .elm{
  	text-align: center;
  	float: left;
- 	margin:10px;
+ 	margin: 10px;
+ 	height: 380px;
+ 	background-color: #594663;
  }
- .first{
 
- 	width:970px;
- 	clear:left;
+ .first{
+ 	width:330px;
+    margin: 00 auto;
+ }
+
+ .canvasStyle{
+ 	border:1px solid #b28d93;
+ 	margin:5px;
  }
 </style>
-<body>
+<body style="background-color: #16314a;">
 <script src="triMath.js"></script>
 
 <div id="container">
-<div id="containerInner">
+	<div id="containerInner">
+		<div class="row first">
+			<div class="elm">
+				Draw
+				<br>
+				<canvas id="canvas0" width="300" height="300" class="canvasStyle"> </canvas>
+			</div>
+		</div>
 
-	<div class="elm first">
-		Draw
-		</br>
-		<canvas id="canvas0" width="300" height="300" style="border:1px solid #000000;"> </canvas>
+		<div class="row">
+			<h3></br>Polygon Reduction</h3>
+		</div>
+
+		<div class="row">
+			<div class="elm">
+				No reduction
+				</br>
+				<canvas id="canvas1" width="300" height="300" class="canvasStyle"> </canvas>
+			</div>
+
+			<div class="elm">
+				Douglas-Peucker
+				</br>
+				<canvas id="canvas2" width="300" height="300" class="canvasStyle"> </canvas>
+				</br>
+				</br>
+				
+				<form><input type="range" min=0 max=10 id="epsilon" step=0.1 value=4></input><label id="epLabel" value="">aaaa</label></form>
+				
+			</div>
+
+			<div class="elm">
+				Visvalingam-Whyatt
+				</br>
+				<canvas id="canvas3" width="300" height="300" class="canvasStyle"> </canvas>
+				</br>
+				</br>
+				
+				<form><input type="range" min=0 max=1 id="percent" step=0.01 value=0.60></input><label id="percentLabel" value="">aaaa</label></form>
+				
+			</div>
+		</div>
+
+		<div class="row">
+			<h3></br>Deconstruct to Monotone Polygons</h3>
+		</div>
+
+		<div class="row">
+			<div class="elm">
+				No reduction
+				</br>
+				<canvas id="canvas4" width="300" height="300" class="canvasStyle"> </canvas>
+			</div>
+
+			<div class="elm">
+				Douglas-Peucker
+				</br>
+				<canvas id="canvas5" width="300" height="300" class="canvasStyle"> </canvas>
+				
+			</div>
+
+			<div class="elm">
+				Visvalingam-Whyatt
+				</br>
+				<canvas id="canvas6" width="300" height="300" class="canvasStyle"> </canvas>
+				
+			</div>
+		</div>
+
+		<div class="row">
+			<h3></br>Triangulation</h3>
+		</div>
+
+		<div class="row">
+
+			<div class="elm">
+				No reduction
+				</br>
+				<canvas id="canvas7" width="300" height="300" class="canvasStyle"> </canvas>
+			</div>
+
+			<div class="elm">
+				Douglas-Peucker
+				</br>
+				<canvas id="canvas8" width="300" height="300" class="canvasStyle"> </canvas>
+				
+			</div>
+
+			<div class="elm">
+				Visvalingam-Whyatt
+				</br>
+				<canvas id="canvas9" width="300" height="300" class="canvasStyle"> </canvas>
+				
+			</div>
+		</div>
+
 	</div>
-
-	<div class="elm">
-		No reduction
-		</br>
-		<canvas id="canvas1" width="300" height="300" style="border:1px solid #000000;"> </canvas>
-	</div>
-
-	<div class="elm">
-		Douglas-Peucker
-		</br>
-		<canvas id="canvas2" width="300" height="300" style="border:1px solid #000000;"> </canvas>
-		</br>
-		</br>
-		
-		<form><input type="range" min=0 max=10 id="epsilon" step=0.1 value=4></input><label id="epLabel" value="">aaaa</label></form>
-		
-	</div>
-
-	<div class="elm">
-		Visvalingam-Whyatt
-		</br>
-		<canvas id="canvas3" width="300" height="300" style="border:1px solid #000000;"> </canvas>
-		</br>
-		</br>
-		
-		<form><input type="range" min=0 max=1 id="percent" step=0.01 value=0.60></input><label id="percentLabel" value="">aaaa</label></form>
-		
-	</div>
-
-
-	<div class="elm">
-		No reduction
-		</br>
-		<canvas id="canvas4" width="300" height="300" style="border:1px solid #000000;"> </canvas>
-	</div>
-
-	<div class="elm">
-		Douglas-Peucker
-		</br>
-		<canvas id="canvas5" width="300" height="300" style="border:1px solid #000000;"> </canvas>
-		
-	</div>
-
-	<div class="elm">
-		Visvalingam-Whyatt
-		</br>
-		<canvas id="canvas6" width="300" height="300" style="border:1px solid #000000;"> </canvas>
-		
-	</div>
-
-	<div class="elm">
-		No reduction
-		</br>
-		<canvas id="canvas7" width="300" height="300" style="border:1px solid #000000;"> </canvas>
-	</div>
-
-	<div class="elm">
-		Douglas-Peucker
-		</br>
-		<canvas id="canvas8" width="300" height="300" style="border:1px solid #000000;"> </canvas>
-		
-	</div>
-
-	<div class="elm">
-		Visvalingam-Whyatt
-		</br>
-		<canvas id="canvas9" width="300" height="300" style="border:1px solid #000000;"> </canvas>
-		
-	</div>
-
-<!-- 	<div>
-		No reduction Monotone
-		</br>
-		<canvas id="canvas5" width="300" height="300" style="border:1px solid #000000;"> </canvas>
-		
-	</div> -->
-
-</div>
 </div>
 
 <script type="text/javascript">
@@ -156,44 +186,56 @@ function tick(){
 		var dpPolygon = douglasPeucker(startingPolygon,epsilonSlider.value);
 		var vwPolygon = visvalingamWhyatt(startingPolygon,percentSlider.value);
 
+		var line1 = "#beb9c1";
+		var line2 = "#68cef0";
+		var line3 = "#626b8e";
 
-		drawPolygons(contexts[0],[startingPolygon],false);
-		drawPolygons(contexts[1],[startingPolygon],true);
-		drawPolygons(contexts[2],[dpPolygon],true);
-		drawPolygons(contexts[3],[vwPolygon],true);
+		drawPolygons(contexts[0],[startingPolygon],false,line1);
+		drawPolygons(contexts[1],[startingPolygon],true,line1);
+		drawPolygons(contexts[2],[dpPolygon],true,line1);
+		drawPolygons(contexts[3],[vwPolygon],true,line1);
 		var monotonePolygons = [];
 		var dpMonotonePolygons = [];
 		var vwMonotonePolygons = [];
 
 		recursiveSplit(startingPolygon,monotonePolygons);
-		drawPolygons(contexts[4],monotonePolygons,true);
+		drawPolygons(contexts[4],monotonePolygons,false,line2);
+		drawPolygons(contexts[4],[startingPolygon],true,line1,true);
 
 		recursiveSplit(dpPolygon,dpMonotonePolygons);
-		drawPolygons(contexts[5],dpMonotonePolygons,true);
+		drawPolygons(contexts[5],dpMonotonePolygons,false,line2);
+		drawPolygons(contexts[5],[dpPolygon],true,line1,true);
 
 		recursiveSplit(vwPolygon,vwMonotonePolygons);
-		drawPolygons(contexts[6],vwMonotonePolygons,true);
+		drawPolygons(contexts[6],vwMonotonePolygons,false,line2);
+		drawPolygons(contexts[6],[vwPolygon],true,line1,true);
 
 
 		var tris = [];
 		for (var i = 0; i < monotonePolygons.length; i++){			
 			triangulateMonotonePolygon(monotonePolygons[i],tris);
 		}
-		drawPolygons(contexts[7],tris,true);
+		drawPolygons(contexts[7],tris,false,line3);
+		drawPolygons(contexts[7],monotonePolygons,false,line2,true);
+		drawPolygons(contexts[7],[startingPolygon],true,line1,true);
 
 
 		var tris = [];
 		for (var i = 0; i < dpMonotonePolygons.length; i++){			
 			triangulateMonotonePolygon(dpMonotonePolygons[i],tris);
 		}
-		drawPolygons(contexts[8],tris,true);
+		drawPolygons(contexts[8],tris,false,line3);
+		drawPolygons(contexts[8],dpMonotonePolygons,false,line2,true);
+		drawPolygons(contexts[8],[dpPolygon],true,line1,true);
 
 
 		var tris = [];
 		for (var i = 0; i < vwMonotonePolygons.length; i++){			
 			triangulateMonotonePolygon(vwMonotonePolygons[i],tris);
 		}
-		drawPolygons(contexts[9],tris,true);
+		drawPolygons(contexts[9],tris,false,line3);
+		drawPolygons(contexts[9],vwMonotonePolygons,false,line2,true);
+		drawPolygons(contexts[9],[vwPolygon],true,line1,true);
 
 	}
 	epsilonLabel.innerHTML = "Epsilon: "+epsilonSlider.value;
@@ -201,12 +243,19 @@ function tick(){
 }
 
 
-function drawPolygons(ctx, polygons, drawPoints){
+function drawPolygons(ctx, polygons, drawPoints, color, dontClear){
 	var i;
 	var j; 
 
-	ctx.clearRect(0,0,400,400);	
-	ctx.strokeStyle = "#00000";
+	if (!dontClear){
+		ctx.clearRect(0,0,400,400);
+	}
+	if (drawPoints){
+		ctx.lineWidth = 2;
+	}else{
+		ctx.lineWidth = 1;
+	}
+	ctx.strokeStyle = color;
 
 	for (i = 0; i < polygons.length; i++){
 		var polygon = polygons[i];
@@ -225,7 +274,7 @@ function drawPolygons(ctx, polygons, drawPoints){
 		ctx.stroke();
 
 		if(drawPoints){
-			ctx.fillStyle = "#ff0000";
+			ctx.fillStyle = "#e2776d";
 			for (j = 0; j < polygon.length; j++){
 				ctx.fillRect(polygon[j].x-2,polygon[j].y-2,5,5);
 			}
