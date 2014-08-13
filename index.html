@@ -1,43 +1,51 @@
 <html>
 <style>
- #container{
- 	width:100%;
- 	text-align: center;
- 	color: #b28d93;
- 	font-family: verdana;
- 	font-weight: bold;
- }
-  #containerInner{
- 	width: 1000px;
-    margin: 00 auto;
+	#container{
+		width:100%;
+		text-align: center;
+		color: #b28d93;
+		font-family: verdana;
+		font-weight: bold;
+	}
 
- 	overflow: hidden;
- 	background-color: #384063;
- }
-  .row{
- 	clear:left;
- 	width:100%;
- 	text-align: center;
- }
- .elm{
- 	text-align: center;
- 	float: left;
- 	margin: 10px;
- 	height: 380px;
- 	background-color: #594663;
- }
+	#containerInner{
+		width: 1000px;
+		margin: 00 auto;
 
- .first{
- 	width:330px;
-    margin: 00 auto;
- }
+		overflow: hidden;
+		background-color: #384063;
+	}
 
- .canvasStyle{
- 	border:1px solid #b28d93;
- 	margin:5px;
- }
+	.row{
+		clear:left;
+		width:100%;
+		text-align: center;
+	}
+
+	.elm{
+		text-align: center;
+		float: left;
+		margin: 10px;
+		height: 380px;
+		background-color: #594663;
+	}
+
+	.desc{
+		text-align: left;
+
+	}
+
+	.first{
+		width:330px;
+		margin: 00 auto;
+	}
+
+	.canvasStyle{
+		border:1px solid #b28d93;
+		margin:5px;
+	}
 </style>
-<body style="background-color: #16314a;">
+<body style="background-color: #0f1c29;">
 <script src="triMath.js"></script>
 
 <div id="container">
@@ -67,9 +75,12 @@
 				<canvas id="canvas2" width="300" height="300" class="canvasStyle"> </canvas>
 				</br>
 				</br>
-				
-				<form><input type="range" min=0 max=10 id="epsilon" step=0.1 value=4></input><label id="epLabel" value="">aaaa</label></form>
-				
+				<div class="desc">
+					<form>
+						<input type="range" min=0 max=10 id="epsilon" step=0.1 value=4></input>
+						<label id="epLabel" value="">aaaa</label>
+					</form>
+				</div>
 			</div>
 
 			<div class="elm">
@@ -78,9 +89,12 @@
 				<canvas id="canvas3" width="300" height="300" class="canvasStyle"> </canvas>
 				</br>
 				</br>
-				
-				<form><input type="range" min=0 max=1 id="percent" step=0.01 value=0.60></input><label id="percentLabel" value="">aaaa</label></form>
-				
+				<div class="desc">
+					<form>
+						<input type="range" min=0 max=1 id="percent" step=0.01 value=0.60></input>
+						<label id="percentLabel" value="">aaaa</label>
+					</form>
+				</div>
 			</div>
 		</div>
 

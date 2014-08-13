@@ -384,21 +384,8 @@ function triangulateMonotonePolygon(polygon,triangles){
 			for (var j = i+1; j<scanningVerticies.length; j++){
 				if (validEdge(polygon,scanningVerticies,i,j)){
 					var results = splitPolygon(polygon,scanningVerticies,i,j);
+					recurse(results);
 					
-					if (results.length>0){
-						if (results[0].length==3){
-							triangles.push(results[0])
-						}else{
-							triangulateMonotonePolygon(results[0],triangles);
-						}
-					}
-					if (results.length>1){
-						if (results[1].length==3){
-							triangles.push(results[1])
-						}else{
-							triangulateMonotonePolygon(results[1],triangles);
-						}
-					}
 					return;
 				}else{
 					break;
@@ -412,21 +399,8 @@ function triangulateMonotonePolygon(polygon,triangles){
 				if (validEdge(polygon,scanningVerticies,i,tirIndex)){
 					stack.slice(j,1);
 					var results = splitPolygon(polygon,scanningVerticies,i,tirIndex);
-					
-					if (results.length>0){
-						if (results[0].length==3){
-							triangles.push(results[0])
-						}else{
-							triangulateMonotonePolygon(results[0],triangles);
-						}
-					}
-					if (results.length>1){
-						if (results[1].length==3){
-							triangles.push(results[1])
-						}else{
-							triangulateMonotonePolygon(results[1],triangles);
-						}
-					}
+					recurse(results);
+
 					return;
 				}
 				
@@ -435,26 +409,13 @@ function triangulateMonotonePolygon(polygon,triangles){
 			stack.push(scanningVerticies[i])
 		}
 	}
-	console.log("SCRAMBLE!")
+	console.log("?")
 	for (i = 1; i < scanningVerticies.length; i++){
 		if (validEdge(polygon,scanningVerticies,0,i)){
 			stack.slice(j,1);
 			var results = splitPolygon(polygon,scanningVerticies,0,i);
-			
-			if (results.length>0){
-				if (results[0].length==3){
-					triangles.push(results[0])
-				}else{
-					triangulateMonotonePolygon(results[0],triangles);
-				}
-			}
-			if (results.length>1){
-				if (results[1].length==3){
-					triangles.push(results[1])
-				}else{
-					triangulateMonotonePolygon(results[1],triangles);
-				}
-			}
+			recurse(results);
+
 			return;
 		}
 	}
@@ -464,26 +425,27 @@ function triangulateMonotonePolygon(polygon,triangles){
 		if (validEdge(polygon,scanningVerticies,scanningVerticies.length-1,i)){
 			stack.slice(j,1);
 			var results = splitPolygon(polygon,scanningVerticies,scanningVerticies.length-1,i);
+			recurse(results);
 			
-			if (results.length>0){
-				if (results[0].length==3){
-					triangles.push(results[0])
-				}else{
-					triangulateMonotonePolygon(results[0],triangles);
-				}
-			}
-			if (results.length>1){
-				if (results[1].length==3){
-					triangles.push(results[1])
-				}else{
-					triangulateMonotonePolygon(results[1],triangles);
-				}
-			}
 			return;
+		}
+	}
+
+	function recurse(results){
+		if (results.length>0){
+			if (results[0].length==3){
+				triangles.push(results[0])
+			}else{
+				triangulateMonotonePolygon(results[0],triangles);
+			}
+		}
+		if (results.length>1){
+			if (results[1].length==3){
+				triangles.push(results[1])
+			}else{
+				triangulateMonotonePolygon(results[1],triangles);
+			}
 		}
 	}
 }
 
-function aaaa(){
-
-}
