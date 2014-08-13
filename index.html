@@ -18,7 +18,7 @@
 
 	.row{
 		clear:left;
-		width:100%;
+		
 		text-align: center;
 	}
 
@@ -55,6 +55,10 @@
 				Draw
 				<br>
 				<canvas id="canvas0" width="300" height="300" class="canvasStyle"> </canvas>
+				<div class="desc">
+					<button style="margin:10px;" id="clearPolygon">clear</button>
+					<button style="margin:10px;" id="copyPolygon">copy polygon</button>
+				</div>
 			</div>
 		</div>
 
@@ -156,175 +160,185 @@
 
 <script type="text/javascript">
 
-var canvases = [];
-var contexts = [];
+	var canvases = [];
+	var contexts = [];
 
-for (var i = 0; i < 10; i++){
-	canvases[i] = document.getElementById('canvas'+i);
-	contexts[i] = canvases[i] .getContext("2d");
-}
-
-var rect = canvases[0].getBoundingClientRect();
-
-window.onscroll = function (event) {
-	rect = canvases[0].getBoundingClientRect();
-}
-
-var startingPolygon = [];
-var mousePoint = new Point(0,0);
-var mousedown = false;
-
-
-var epsilonSlider = document.getElementById('epsilon');
-var epsilonLabel = document.getElementById('epLabel');
-
-
-var percentSlider = document.getElementById('percent');
-var percentLabel = document.getElementById('percentLabel');
-
-
-var canDraw = true;
-
-function tick(){
-
-	if (mousedown && canDraw){
-		if (startingPolygon.length == 0){
-			startingPolygon.push(new Point(mousePoint.x,mousePoint.y));
-		}
-		if (dist(mousePoint,startingPolygon[startingPolygon.length-1]) > 10){
-			startingPolygon.push(new Point(mousePoint.x,mousePoint.y));
-		}
+	for (var i = 0; i < 10; i++){
+		canvases[i] = document.getElementById('canvas'+i);
+		contexts[i] = canvases[i] .getContext("2d");
 	}
 
-	if (startingPolygon.length > 1){
-		var dpPolygon = douglasPeucker(startingPolygon,epsilonSlider.value);
-		var vwPolygon = visvalingamWhyatt(startingPolygon,percentSlider.value);
+	var rect = canvases[0].getBoundingClientRect();
 
-		var line1 = "#beb9c1";
-		var line2 = "#68cef0";
-		var line3 = "#626b8e";
-
-		drawPolygons(contexts[0],[startingPolygon],false,line1);
-		drawPolygons(contexts[1],[startingPolygon],true,line1);
-		drawPolygons(contexts[2],[dpPolygon],true,line1);
-		drawPolygons(contexts[3],[vwPolygon],true,line1);
-		var monotonePolygons = [];
-		var dpMonotonePolygons = [];
-		var vwMonotonePolygons = [];
-
-		recursiveSplit(startingPolygon,monotonePolygons);
-		drawPolygons(contexts[4],monotonePolygons,false,line2);
-		drawPolygons(contexts[4],[startingPolygon],true,line1,true);
-
-		recursiveSplit(dpPolygon,dpMonotonePolygons);
-		drawPolygons(contexts[5],dpMonotonePolygons,false,line2);
-		drawPolygons(contexts[5],[dpPolygon],true,line1,true);
-
-		recursiveSplit(vwPolygon,vwMonotonePolygons);
-		drawPolygons(contexts[6],vwMonotonePolygons,false,line2);
-		drawPolygons(contexts[6],[vwPolygon],true,line1,true);
-
-
-		var tris = [];
-		for (var i = 0; i < monotonePolygons.length; i++){			
-			triangulateMonotonePolygon(monotonePolygons[i],tris);
-		}
-		drawPolygons(contexts[7],tris,false,line3);
-		drawPolygons(contexts[7],monotonePolygons,false,line2,true);
-		drawPolygons(contexts[7],[startingPolygon],true,line1,true);
-
-
-		var tris = [];
-		for (var i = 0; i < dpMonotonePolygons.length; i++){			
-			triangulateMonotonePolygon(dpMonotonePolygons[i],tris);
-		}
-		drawPolygons(contexts[8],tris,false,line3);
-		drawPolygons(contexts[8],dpMonotonePolygons,false,line2,true);
-		drawPolygons(contexts[8],[dpPolygon],true,line1,true);
-
-
-		var tris = [];
-		for (var i = 0; i < vwMonotonePolygons.length; i++){			
-			triangulateMonotonePolygon(vwMonotonePolygons[i],tris);
-		}
-		drawPolygons(contexts[9],tris,false,line3);
-		drawPolygons(contexts[9],vwMonotonePolygons,false,line2,true);
-		drawPolygons(contexts[9],[vwPolygon],true,line1,true);
-
+	window.onscroll = function (event) {
+		rect = canvases[0].getBoundingClientRect();
 	}
-	epsilonLabel.innerHTML = "Epsilon: "+epsilonSlider.value;
-	percentLabel.innerHTML = "Percent: "+percentSlider.value;
-}
+
+	var startingPolygon = [];
+	var mousePoint = new Point(0,0);
+	var mousedown = false;
 
 
-function drawPolygons(ctx, polygons, drawPoints, color, dontClear){
-	var i;
-	var j; 
+	var epsilonSlider = document.getElementById('epsilon');
+	var epsilonLabel = document.getElementById('epLabel');
 
-	if (!dontClear){
-		ctx.clearRect(0,0,400,400);
-	}
-	if (drawPoints){
-		ctx.lineWidth = 2;
-	}else{
-		ctx.lineWidth = 1;
-	}
-	ctx.strokeStyle = color;
 
-	for (i = 0; i < polygons.length; i++){
-		var polygon = polygons[i];
-		ctx.beginPath();
-		ctx.moveTo(polygon[0].x,polygon[0].y);
-		if (polygon.length > 2){
-			for (j = 1; j < polygon.length; j++){
-				ctx.lineTo(polygon[j].x,polygon[j].y);
+	var percentSlider = document.getElementById('percent');
+	var percentLabel = document.getElementById('percentLabel');
+
+
+	var canDraw = true;
+
+	function tick(){
+
+		if (mousedown && canDraw){
+			if (startingPolygon.length == 0){
+				startingPolygon.push(new Point(mousePoint.x,mousePoint.y));
 			}
-			if (mousedown && canDraw){
-				ctx.lineTo(mousePoint.x,mousePoint.y);
-			}else{
-				ctx.lineTo(polygon[0].x,polygon[0].y);
+			if (dist(mousePoint,startingPolygon[startingPolygon.length-1]) > 10){
+				startingPolygon.push(new Point(mousePoint.x,mousePoint.y));
 			}
 		}
-		ctx.stroke();
 
-		if(drawPoints){
-			ctx.fillStyle = "#e2776d";
-			for (j = 0; j < polygon.length; j++){
-				ctx.fillRect(polygon[j].x-2,polygon[j].y-2,5,5);
+		if (startingPolygon.length > 1){
+			var dpPolygon = douglasPeucker(startingPolygon,epsilonSlider.value);
+			var vwPolygon = visvalingamWhyatt(startingPolygon,percentSlider.value);
+
+			var line1 = "#beb9c1";
+			var line2 = "#68cef0";
+			var line3 = "#626b8e";
+
+			drawPolygons(contexts[0],[startingPolygon],false,line1);
+			drawPolygons(contexts[1],[startingPolygon],true,line1);
+			drawPolygons(contexts[2],[dpPolygon],true,line1);
+			drawPolygons(contexts[3],[vwPolygon],true,line1);
+			var monotonePolygons = [];
+			var dpMonotonePolygons = [];
+			var vwMonotonePolygons = [];
+
+			recursiveSplit(startingPolygon,monotonePolygons);
+			drawPolygons(contexts[4],monotonePolygons,false,line2);
+			drawPolygons(contexts[4],[startingPolygon],true,line1,true);
+
+			recursiveSplit(dpPolygon,dpMonotonePolygons);
+			drawPolygons(contexts[5],dpMonotonePolygons,false,line2);
+			drawPolygons(contexts[5],[dpPolygon],true,line1,true);
+
+			recursiveSplit(vwPolygon,vwMonotonePolygons);
+			drawPolygons(contexts[6],vwMonotonePolygons,false,line2);
+			drawPolygons(contexts[6],[vwPolygon],true,line1,true);
+
+
+			var tris = [];
+			for (var i = 0; i < monotonePolygons.length; i++){			
+				triangulateMonotonePolygon(monotonePolygons[i],tris);
+			}
+			drawPolygons(contexts[7],tris,false,line3);
+			drawPolygons(contexts[7],monotonePolygons,false,line2,true);
+			drawPolygons(contexts[7],[startingPolygon],true,line1,true);
+
+
+			var tris = [];
+			for (var i = 0; i < dpMonotonePolygons.length; i++){			
+				triangulateMonotonePolygon(dpMonotonePolygons[i],tris);
+			}
+			drawPolygons(contexts[8],tris,false,line3);
+			drawPolygons(contexts[8],dpMonotonePolygons,false,line2,true);
+			drawPolygons(contexts[8],[dpPolygon],true,line1,true);
+
+
+			var tris = [];
+			for (var i = 0; i < vwMonotonePolygons.length; i++){			
+				triangulateMonotonePolygon(vwMonotonePolygons[i],tris);
+			}
+			drawPolygons(contexts[9],tris,false,line3);
+			drawPolygons(contexts[9],vwMonotonePolygons,false,line2,true);
+			drawPolygons(contexts[9],[vwPolygon],true,line1,true);
+
+		}
+		epsilonLabel.innerHTML = "Epsilon: "+epsilonSlider.value;
+		percentLabel.innerHTML = "Percent: "+percentSlider.value;
+	}
+
+
+	function drawPolygons(ctx, polygons, drawPoints, color, dontClear){
+		var i;
+		var j; 
+
+		if (!dontClear){
+			ctx.clearRect(0,0,300,300);
+		}
+		if (drawPoints){
+			ctx.lineWidth = 2;
+		}else{
+			ctx.lineWidth = 1;
+		}
+		ctx.strokeStyle = color;
+
+		for (i = 0; i < polygons.length; i++){
+			var polygon = polygons[i];
+			ctx.beginPath();
+			ctx.moveTo(polygon[0].x,polygon[0].y);
+			if (polygon.length > 2){
+				for (j = 1; j < polygon.length; j++){
+					ctx.lineTo(polygon[j].x,polygon[j].y);
+				}
+				if (mousedown && canDraw){
+					ctx.lineTo(mousePoint.x,mousePoint.y);
+				}else{
+					ctx.lineTo(polygon[0].x,polygon[0].y);
+				}
+			}
+			ctx.stroke();
+
+			if(drawPoints){
+				ctx.fillStyle = "#e2776d";
+				for (j = 0; j < polygon.length; j++){
+					ctx.fillRect(polygon[j].x-2,polygon[j].y-2,5,5);
+				}
 			}
 		}
 	}
-}
 
-function drawLine(p1,p2){
-    ctx.beginPath();
-    ctx.moveTo(p1.x,p1.y);
-    ctx.lineTo(p2.x,p2.y);
-    ctx.stroke();
-}
-
-canvases[0].addEventListener('mousemove', function(evt) {
-    mousePoint.x = evt.clientX - rect.left;
-    mousePoint.y = evt.clientY - rect.top;
-  }, false);
-
-canvases[0].addEventListener('mousedown', function(evt) {
-    mousedown = true;
-  }, false);
-
-canvases[0].addEventListener('mouseup', function(evt) {
-    mousedown = false;
-    if (canDraw){
-  //   	var sp = startingPolygon;
-  //   	var dp = douglasPeucker(sp,epsilonSlider.value);
-		// recursiveSplit(dp,nrMonotonePolygons);
-		canDraw = false;
+	function drawLine(p1,p2){
+	    ctx.beginPath();
+	    ctx.moveTo(p1.x,p1.y);
+	    ctx.lineTo(p2.x,p2.y);
+	    ctx.stroke();
 	}
-  }, false);
 
-tick();
-setInterval(tick,16);
+	canvases[0].addEventListener('mousemove', function(evt) {
+	    mousePoint.x = evt.clientX - rect.left;
+	    mousePoint.y = evt.clientY - rect.top;
+	  }, false);
 
+	canvases[0].addEventListener('mousedown', function(evt) {
+	    mousedown = true;
+	  }, false);
+
+	canvases[0].addEventListener('mouseup', function(evt) {
+		mousedown = false;
+		if (canDraw){
+			canDraw = false;
+		}
+	}, false);
+
+	tick();
+	setInterval(tick,16);
+
+	function copyDrawn(){
+		window.prompt("Copy", JSON.stringify(startingPolygon));
+	}
+	document.getElementById("copyPolygon").onclick = copyDrawn;
+
+	function clearDrawn(){
+		startingPolygon = [];
+		canDraw = true;
+		for (var i = 0; i < contexts.length; i++) {
+			contexts[i].clearRect(0,0,300,300);
+		};
+	}
+	document.getElementById("clearPolygon").onclick = clearDrawn;
 
 </script>
 
