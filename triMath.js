@@ -200,12 +200,12 @@ function splitSimplePolygon(polygon){
 		var direction = 0;
 		
 		if (polygon[lastIndex].x > polygon[index].x){
-			if (polygon[nextIndex].x> polygon[index].x){
+			if (polygon[nextIndex].x >= polygon[index].x){
 				subdivide = true;
 				direction = -1;
 			}
 		}else if (polygon[lastIndex].x < polygon[index].x){
-			if (polygon[nextIndex].x < polygon[index].x){
+			if (polygon[nextIndex].x <= polygon[index].x){
 				subdivide = true;
 				direction = 1;
 			}
