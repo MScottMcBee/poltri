@@ -246,17 +246,20 @@ function validEdge(polygon,sortedVerticies,baseIndex,checkingIndex){
 		return false;
 	}
 	
-	for (var k = 0; k < polygon.length-1; k++){
+	for (var k = 0; k < polygon.length; k++){
 		var doIntersect = true;
 		
-		if ((pointEquals(polygon[k], pointX) || pointEquals(polygon[k+1], pointX)) && (pointEquals(polygon[k], pointY) || pointEquals(polygon[k+1], pointY))){
+		var nextK = (k+1) % polygon.length;
+
+
+		if ((pointEquals(polygon[k], pointX) || pointEquals(polygon[nextK], pointX)) && (pointEquals(polygon[k], pointY) || pointEquals(polygon[nextK], pointY))){
 			return false;
 		}
 
-		if (pointEquals(polygon[k], pointX) || pointEquals(polygon[k+1], pointX) || pointEquals(polygon[k], pointY) || pointEquals(polygon[k+1], pointY)){
+		if (pointEquals(polygon[k], pointX) || pointEquals(polygon[nextK], pointX) || pointEquals(polygon[k], pointY) || pointEquals(polygon[nextK], pointY)){
 			doIntersect = false;
 		}
-		if (doIntersect && doesLineIntersect(polygon[k],polygon[k+1],pointX,pointY)){
+		if (doIntersect && doesLineIntersect(polygon[k],polygon[nextK],pointX,pointY)){
 			return false;
 		}
 	}
@@ -281,12 +284,7 @@ function validEdge(polygon,sortedVerticies,baseIndex,checkingIndex){
 	if (count%2==0){
 		return false;
 	}
-	if (checkingIndex >= sortedVerticies.length-1){
-		return false;
-	}
-	if (checkingIndex < 0){
-		return false;
-	}
+	
 	return true;
 }
 
