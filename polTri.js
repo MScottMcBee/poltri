@@ -1,3 +1,4 @@
+"use strict";
 function PolTri(){}
 
 PolTri.prototype.doesLineIntersect = function (a1,a2,b1,b2){
@@ -25,8 +26,7 @@ PolTri.prototype.dist = function (a,b){
 
 PolTri.prototype.segmentDistToPoint = function (p, segA, segB){
 	var p2 = {x: segB.x - segA.x, y: segB.y - segA.y};
-	var something = p2.x*p2.x + p2.y*p2.y;
-	var u = ((p.x - segA.x) * p2.x + (p.y - segA.y) * p2.y) / something;
+	var u = ((p.x - segA.x) * p2.x + (p.y - segA.y) * p2.y) / (p2.x*p2.x + p2.y*p2.y);
 	
 	if (u > 1){
 		u = 1;
@@ -52,6 +52,9 @@ PolTri.prototype.reduceByDistance = function (points,distance){
 	var r2;
 	var largestDistance = 0;
 	var pivotIndex = 0;
+	var i;
+	var d;
+
 	for (var i = 1; i < points.length - 1; i++) {
 		var d = this.segmentDistToPoint(points[i], points[0], points[points.length-1]) ;
 		if ( d > largestDistance ) {
@@ -326,33 +329,36 @@ PolTri.prototype.splitPolygon = function (polygon,sortedVerticies,indexA,indexB)
 }
 
 PolTri.prototype.triangulateMonotonePolygon = function (polygon,triangles){
+	var track1 = [];
+	var track2 = [];
+	var scanningVerticies = polygon.slice();
+	var midPointIndex = (polygon.length/2) | 0;
+	var i, j;
+	var stack;
+
 	if (polygon.length == 3){
 		triangles.push(polygon);
 		return;
 	}
-	
-	var track1 = [];
-	var track2 = [];
-	
-	var scanningVerticies = polygon.slice();
+		
 	scanningVerticies.sort(function (A,B){
 		return A.x-B.x;
 	});
 	
-	var midPointIndex = (polygon.length/2) | 0;
 	
-	for (var i = 0; i != midPointIndex; i++){
+	for (i = 0; i != midPointIndex; i++){
 		track1.push(polygon[i]);
 	}
-	for (var i = polygon.length-1; i != midPointIndex; i--){
+	for (i = polygon.length-1; i != midPointIndex; i--){
 		track2.push(polygon[i]);
 	}
 	track2.push(polygon[midPointIndex]);
 	
-	var stack = [];
+	stack = [];
 	stack.push(scanningVerticies[0],scanningVerticies[1]);
-	var lastDivide = [];
-	for (var i = 2; i<scanningVerticies.length; i++){
+
+
+	for (i = 2; i<scanningVerticies.length; i++){
 		var sameTrack = false;
 		if (track1.indexOf(scanningVerticies[i]) > -1){
 			if (track1.indexOf(stack[stack.length-1]) > -1){
@@ -369,40 +375,32 @@ PolTri.prototype.triangulateMonotonePolygon = function (polygon,triangles){
 		}
 		
 		
-		if (sameTrack){
-			var lastDivide;
-			for (var j = i+1; j<scanningVerticies.length; j++){
+		if (sameTrack){	
+			for (j = i+1; j<scanningVerticies.length; j++){
 				if (this.validEdge(polygon,scanningVerticies,i,j)){
 					var results = this.splitPolygon(polygon,scanningVerticies,i,j);
 					this.recurse(results,triangles);
 					
 					return;
-				}else{
-					break;
 				}
 			}
 			stack.push(scanningVerticies[i]);
 		}else{
-			var vTop = stack[stack.length-1];
-			for (var j =0; j<stack.length; j++){
+			for (j =0; j<stack.length; j++){
 				var tirIndex = scanningVerticies.indexOf(stack[j]);
 				if (this.validEdge(polygon,scanningVerticies,i,tirIndex)){
 					stack.slice(j,1);
 					var results = this.splitPolygon(polygon,scanningVerticies,i,tirIndex);
 					this.recurse(results,triangles);
-
 					return;
 				}
 				
 			}
-			stack.push(vTop);
 			stack.push(scanningVerticies[i])
 		}
 	}
-	console.log("?")
 	for (i = 1; i < scanningVerticies.length; i++){
 		if (this.validEdge(polygon,scanningVerticies,0,i)){
-			stack.slice(j,1);
 			var results = this.splitPolygon(polygon,scanningVerticies,0,i);
 			this.recurse(results,triangles);
 
@@ -410,10 +408,8 @@ PolTri.prototype.triangulateMonotonePolygon = function (polygon,triangles){
 		}
 	}
 	
-	
 	for (i = 0; i < scanningVerticies.length-1; i++){
 		if (this.validEdge(polygon,scanningVerticies,scanningVerticies.length-1,i)){
-			stack.slice(j,1);
 			var results = this.splitPolygon(polygon,scanningVerticies,scanningVerticies.length-1,i);
 			this.recurse(results,triangles);
 			
