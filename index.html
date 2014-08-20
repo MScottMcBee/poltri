@@ -81,7 +81,7 @@
 				</br>
 				<div class="desc">
 					<form>
-						<input type="range" min=0 max=10 id="epsilon" step=0.1 value=4></input>
+						<input type="range" min=0 max=10 id="distance" step=0.1 value=4></input>
 						<label id="epLabel" value="">aaaa</label>
 					</form>
 				</div>
@@ -175,12 +175,12 @@
 	}
 
 	var startingPolygon = [];
-	var mousePoint = new Point(0,0);
+	var mousePoint = {x:0,y:0};
 	var mousedown = false;
 
 
-	var epsilonSlider = document.getElementById('epsilon');
-	var epsilonLabel = document.getElementById('epLabel');
+	var distanceSlider = document.getElementById('distance');
+	var distanceLabel = document.getElementById('epLabel');
 
 
 	var percentSlider = document.getElementById('percent');
@@ -189,20 +189,22 @@
 
 	var canDraw = true;
 
+	var polTri = new PolTri();
+
 	function tick(){
 
 		if (mousedown && canDraw){
 			if (startingPolygon.length == 0){
-				startingPolygon.push(new Point(mousePoint.x,mousePoint.y));
+				startingPolygon.push({x:mousePoint.x, y:mousePoint.y});
 			}
-			if (dist(mousePoint,startingPolygon[startingPolygon.length-1]) > 10){
-				startingPolygon.push(new Point(mousePoint.x,mousePoint.y));
+			if (polTri.dist(mousePoint,startingPolygon[startingPolygon.length-1]) > 10){
+				startingPolygon.push({x:mousePoint.x, y:mousePoint.y});
 			}
 		}
 
 		if (startingPolygon.length > 1){
-			var dpPolygon = douglasPeucker(startingPolygon,epsilonSlider.value);
-			var vwPolygon = visvalingamWhyatt(startingPolygon,percentSlider.value);
+			var dpPolygon = polTri.reduceByDistance(startingPolygon,distanceSlider.value);
+			var vwPolygon = polTri.reduceByPercentage(startingPolygon,percentSlider.value);
 
 			var line1 = "#beb9c1";
 			var line2 = "#68cef0";
@@ -216,22 +218,22 @@
 			var dpMonotonePolygons = [];
 			var vwMonotonePolygons = [];
 
-			recursiveSplit(startingPolygon,monotonePolygons);
+			polTri.recursiveSplit(startingPolygon,monotonePolygons);
 			drawPolygons(contexts[4],monotonePolygons,false,line2);
 			drawPolygons(contexts[4],[startingPolygon],true,line1,true);
 
-			recursiveSplit(dpPolygon,dpMonotonePolygons);
+			polTri.recursiveSplit(dpPolygon,dpMonotonePolygons);
 			drawPolygons(contexts[5],dpMonotonePolygons,false,line2);
 			drawPolygons(contexts[5],[dpPolygon],true,line1,true);
 
-			recursiveSplit(vwPolygon,vwMonotonePolygons);
+			polTri.recursiveSplit(vwPolygon,vwMonotonePolygons);
 			drawPolygons(contexts[6],vwMonotonePolygons,false,line2);
 			drawPolygons(contexts[6],[vwPolygon],true,line1,true);
 
 
 			var tris = [];
 			for (var i = 0; i < monotonePolygons.length; i++){			
-				triangulateMonotonePolygon(monotonePolygons[i],tris);
+				polTri.triangulateMonotonePolygon(monotonePolygons[i],tris);
 			}
 			drawPolygons(contexts[7],tris,false,line3);
 			drawPolygons(contexts[7],monotonePolygons,false,line2,true);
@@ -240,7 +242,7 @@
 
 			var tris = [];
 			for (var i = 0; i < dpMonotonePolygons.length; i++){			
-				triangulateMonotonePolygon(dpMonotonePolygons[i],tris);
+				polTri.triangulateMonotonePolygon(dpMonotonePolygons[i],tris);
 			}
 			drawPolygons(contexts[8],tris,false,line3);
 			drawPolygons(contexts[8],dpMonotonePolygons,false,line2,true);
@@ -249,14 +251,14 @@
 
 			var tris = [];
 			for (var i = 0; i < vwMonotonePolygons.length; i++){			
-				triangulateMonotonePolygon(vwMonotonePolygons[i],tris);
+				polTri.triangulateMonotonePolygon(vwMonotonePolygons[i],tris);
 			}
 			drawPolygons(contexts[9],tris,false,line3);
 			drawPolygons(contexts[9],vwMonotonePolygons,false,line2,true);
 			drawPolygons(contexts[9],[vwPolygon],true,line1,true);
 
 		}
-		epsilonLabel.innerHTML = "Epsilon: "+epsilonSlider.value;
+		distanceLabel.innerHTML = "distance: "+distanceSlider.value;
 		percentLabel.innerHTML = "Percent: "+percentSlider.value;
 	}
 

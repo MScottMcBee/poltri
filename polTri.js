@@ -1,14 +1,6 @@
+function PolTri(){}
 
-function Point(x,y){
-	this.x = x;
-	this.y = y;
-}
-
-Point.prototype.x = 0;
-Point.prototype.y = 0;
-
-
-function doesLineIntersect(a1,a2,b1,b2){
+PolTri.prototype.doesLineIntersect = function (a1,a2,b1,b2){
 	var result;
 	
 	var ua_t = (b2.x - b1.x) * (a1.y - b1.y) - (b2.y - b1.y) * (a1.x - b1.x);
@@ -27,12 +19,12 @@ function doesLineIntersect(a1,a2,b1,b2){
 	return result;
 }
 
-function dist(a,b){
+PolTri.prototype.dist = function (a,b){
 	return Math.sqrt((a.x-b.x)*(a.x-b.x)+(a.y-b.y)*(a.y-b.y));
 }
 
-function segmentDistToPoint(p, segA, segB){
-	var p2 = new Point(segB.x - segA.x, segB.y - segA.y);
+PolTri.prototype.segmentDistToPoint = function (p, segA, segB){
+	var p2 = {x: segB.x - segA.x, y: segB.y - segA.y};
 	var something = p2.x*p2.x + p2.y*p2.y;
 	var u = ((p.x - segA.x) * p2.x + (p.y - segA.y) * p2.y) / something;
 	
@@ -53,22 +45,23 @@ function segmentDistToPoint(p, segA, segB){
 	return dist;
 }
 
-function douglasPeucker(points,epsilon){
+//douglasPeucker
+PolTri.prototype.reduceByDistance = function (points,distance){
 	var results = [];
 	var r1;
 	var r2;
 	var largestDistance = 0;
 	var pivotIndex = 0;
 	for (var i = 1; i < points.length - 1; i++) {
-		var d = segmentDistToPoint(points[i], points[0], points[points.length-1]) ;
+		var d = this.segmentDistToPoint(points[i], points[0], points[points.length-1]) ;
 		if ( d > largestDistance ) {
 			pivotIndex = i;
 			largestDistance = d;
 		}
 	}
-	if ( largestDistance > epsilon ) {
-		r1 = douglasPeucker(points.slice(0,pivotIndex+1), epsilon);
-		r2 = douglasPeucker(points.slice(pivotIndex), epsilon);
+	if ( largestDistance > distance ) {
+		r1 = this.reduceByDistance(points.slice(0,pivotIndex+1), distance);
+		r2 = this.reduceByDistance(points.slice(pivotIndex), distance);
 		
 		results = r1.concat(r2.slice(1));
 	} else {
@@ -78,24 +71,25 @@ function douglasPeucker(points,epsilon){
 	return results;
 }
 
-function visvalingamWhyatt(points,percentage){
+//visvalingamWhyatt
+PolTri.prototype.reduceByPercentage = function (points,percentage){
 	var referenceTriangles = [];
 	var workingTriangles = [];
 	var results = [];
 	var i;
 	var vwTriangle;
 
-	vwTriangle = createVWTriangle(points[points.length-1],points[0],points[1]);
+	vwTriangle = this.createVWTriangle(points[points.length-1],points[0],points[1]);
 	if(vwTriangle){
 		referenceTriangles.push(vwTriangle);
 	}
 	for (i = 0; i < points.length - 2; i++) {
-		vwTriangle = createVWTriangle(points[i],points[i+1],points[i+2]);
+		vwTriangle = this.createVWTriangle(points[i],points[i+1],points[i+2]);
 		if(vwTriangle){
 			referenceTriangles.push(vwTriangle);
 		}
 	}
-	vwTriangle = createVWTriangle(points[points.length-2],points[points.length-1],points[0]);
+	vwTriangle = this.createVWTriangle(points[points.length-2],points[points.length-1],points[0]);
 	if(vwTriangle){
 		referenceTriangles.push(vwTriangle);
 	}
@@ -124,7 +118,7 @@ function visvalingamWhyatt(points,percentage){
 		if (relRefInd2 < 0){
 			relRefInd2+=referenceTriangles.length;
 		}
-		referenceTriangles[relRefInd2] = createVWTriangle(referenceTriangles[relRefInd1].point,referenceTriangles[relRefInd2].point,referenceTriangles[referenceIndex].point);
+		referenceTriangles[relRefInd2] = this.createVWTriangle(referenceTriangles[relRefInd1].point,referenceTriangles[relRefInd2].point,referenceTriangles[referenceIndex].point);
 		
 		var relRefInd1 = referenceIndex-1;
 		var relRefInd2 = referenceIndex+1;
@@ -135,7 +129,7 @@ function visvalingamWhyatt(points,percentage){
 			relRefInd2-=referenceTriangles.length;
 		}
 		
-		referenceTriangles[referenceIndex] = createVWTriangle(referenceTriangles[relRefInd1].point,referenceTriangles[referenceIndex].point,referenceTriangles[relRefInd2].point);
+		referenceTriangles[referenceIndex] = this.createVWTriangle(referenceTriangles[relRefInd1].point,referenceTriangles[referenceIndex].point,referenceTriangles[relRefInd2].point);
 	}
 
 	for (i = 0; i < referenceTriangles.length; i++) {
@@ -143,11 +137,11 @@ function visvalingamWhyatt(points,percentage){
 	}
 
 	return results;
+}
 
-
-	function createVWTriangle(p1,p2,p3){
-		var base = dist(p1,p3);
-		var height = segmentDistToPoint(p2,p1,p3);
+PolTri.prototype.createVWTriangle = function (p1,p2,p3){
+		var base = this.dist(p1,p3);
+		var height = this.segmentDistToPoint(p2,p1,p3);
 		var newVWTriangle = {};
 		var area = base*height/2;
 		
@@ -161,16 +155,14 @@ function visvalingamWhyatt(points,percentage){
 		return null;
 	}
 
-}
-
-function recursiveSplit(polygon,output){
-	var divided = splitSimplePolygon(polygon);
+PolTri.prototype.recursiveSplit = function (polygon,output){
+	var divided = this.splitSimplePolygon(polygon);
 	if (divided.length > 1){
 		var polygonA = divided[0];
 		var polygonB = divided[1];
 		
-		recursiveSplit(polygonA,output);
-		recursiveSplit(polygonB,output);
+		this.recursiveSplit(polygonA,output);
+		this.recursiveSplit(polygonB,output);
 		
 	}else{
 		output.push(polygon);
@@ -178,7 +170,7 @@ function recursiveSplit(polygon,output){
 }
 
 
-function splitSimplePolygon(polygon){
+PolTri.prototype.splitSimplePolygon = function (polygon){
 	
 	var scanningVerticies = polygon.slice();
 	scanningVerticies.sort(function (a,b){
@@ -213,9 +205,9 @@ function splitSimplePolygon(polygon){
 		
 		var xxIndex = i;
 		while (subdivide){
-			var doit = validEdge(polygon,scanningVerticies,i,xxIndex+direction);
+			var doit = this.validEdge(polygon,scanningVerticies,i,xxIndex+direction);
 			if (doit){
-				return splitPolygon(polygon,scanningVerticies,i,xxIndex+direction);
+				return this.splitPolygon(polygon,scanningVerticies,i,xxIndex+direction);
 			}else{
 				xxIndex += direction;
 				if (xxIndex < 0 || xxIndex >= scanningVerticies.length){
@@ -232,7 +224,7 @@ function splitSimplePolygon(polygon){
 
 // This determins if the "cut" in the polygon is valid. An example of an invalid cut would be on that is outside of the polygon, 
 // or one where the two points are adjacent on the polygon.
-function validEdge(polygon,sortedVerticies,baseIndex,checkingIndex){
+PolTri.prototype.validEdge = function (polygon,sortedVerticies,baseIndex,checkingIndex){
 	// If we're out of bounds, it's not valid
 	if (checkingIndex >= sortedVerticies.length || checkingIndex < 0){
 		return false;
@@ -242,7 +234,7 @@ function validEdge(polygon,sortedVerticies,baseIndex,checkingIndex){
 	var pointY = {x:sortedVerticies[checkingIndex].x, y:sortedVerticies[checkingIndex].y};
 
 	//If the edge is the line segment that closes the polygon, it's not valid.
-	if ((pointEquals(polygon[0],pointX) || pointEquals(polygon[polygon.length-1],pointX)) && (pointEquals(polygon[0],pointY) || pointEquals(polygon[polygon.length-1],pointY))){
+	if ((this.pointEquals(polygon[0],pointX) || this.pointEquals(polygon[polygon.length-1],pointX)) && (this.pointEquals(polygon[0],pointY) || this.pointEquals(polygon[polygon.length-1],pointY))){
 		return false;
 	}
 	
@@ -252,14 +244,14 @@ function validEdge(polygon,sortedVerticies,baseIndex,checkingIndex){
 		var nextK = (k+1) % polygon.length;
 
 
-		if ((pointEquals(polygon[k], pointX) || pointEquals(polygon[nextK], pointX)) && (pointEquals(polygon[k], pointY) || pointEquals(polygon[nextK], pointY))){
+		if ((this.pointEquals(polygon[k], pointX) || this.pointEquals(polygon[nextK], pointX)) && (this.pointEquals(polygon[k], pointY) || this.pointEquals(polygon[nextK], pointY))){
 			return false;
 		}
 
-		if (pointEquals(polygon[k], pointX) || pointEquals(polygon[nextK], pointX) || pointEquals(polygon[k], pointY) || pointEquals(polygon[nextK], pointY)){
+		if (this.pointEquals(polygon[k], pointX) || this.pointEquals(polygon[nextK], pointX) || this.pointEquals(polygon[k], pointY) || this.pointEquals(polygon[nextK], pointY)){
 			doIntersect = false;
 		}
-		if (doIntersect && doesLineIntersect(polygon[k],polygon[nextK],pointX,pointY)){
+		if (doIntersect && this.doesLineIntersect(polygon[k],polygon[nextK],pointX,pointY)){
 			return false;
 		}
 	}
@@ -276,7 +268,7 @@ function validEdge(polygon,sortedVerticies,baseIndex,checkingIndex){
 		
 		testPoint.x = pointX.x+((pointY.x-pointX.x)/2);
 		testPoint.y = pointX.y+((pointY.y-pointX.y)/2);
-		if (doesLineIntersect(polygon[h],polygon[offset],origin,testPoint)){
+		if (this.doesLineIntersect(polygon[h],polygon[offset],origin,testPoint)){
 			count++;
 		}
 	}
@@ -288,11 +280,11 @@ function validEdge(polygon,sortedVerticies,baseIndex,checkingIndex){
 	return true;
 }
 
-function pointEquals(a,b){
+PolTri.prototype.pointEquals = function (a,b){
 	return a.x == b.x && a.y == b.y;
 }
 
-function splitPolygon(polygon,sortedVerticies,indexA,indexB){
+PolTri.prototype.splitPolygon = function (polygon,sortedVerticies,indexA,indexB){
 	var results = [];
 	var splittingIndex;
 
@@ -333,7 +325,7 @@ function splitPolygon(polygon,sortedVerticies,indexA,indexB){
 	
 }
 
-function triangulateMonotonePolygon(polygon,triangles){
+PolTri.prototype.triangulateMonotonePolygon = function (polygon,triangles){
 	if (polygon.length == 3){
 		triangles.push(polygon);
 		return;
@@ -380,9 +372,9 @@ function triangulateMonotonePolygon(polygon,triangles){
 		if (sameTrack){
 			var lastDivide;
 			for (var j = i+1; j<scanningVerticies.length; j++){
-				if (validEdge(polygon,scanningVerticies,i,j)){
-					var results = splitPolygon(polygon,scanningVerticies,i,j);
-					recurse(results);
+				if (this.validEdge(polygon,scanningVerticies,i,j)){
+					var results = this.splitPolygon(polygon,scanningVerticies,i,j);
+					this.recurse(results,triangles);
 					
 					return;
 				}else{
@@ -394,10 +386,10 @@ function triangulateMonotonePolygon(polygon,triangles){
 			var vTop = stack[stack.length-1];
 			for (var j =0; j<stack.length; j++){
 				var tirIndex = scanningVerticies.indexOf(stack[j]);
-				if (validEdge(polygon,scanningVerticies,i,tirIndex)){
+				if (this.validEdge(polygon,scanningVerticies,i,tirIndex)){
 					stack.slice(j,1);
-					var results = splitPolygon(polygon,scanningVerticies,i,tirIndex);
-					recurse(results);
+					var results = this.splitPolygon(polygon,scanningVerticies,i,tirIndex);
+					this.recurse(results,triangles);
 
 					return;
 				}
@@ -409,10 +401,10 @@ function triangulateMonotonePolygon(polygon,triangles){
 	}
 	console.log("?")
 	for (i = 1; i < scanningVerticies.length; i++){
-		if (validEdge(polygon,scanningVerticies,0,i)){
+		if (this.validEdge(polygon,scanningVerticies,0,i)){
 			stack.slice(j,1);
-			var results = splitPolygon(polygon,scanningVerticies,0,i);
-			recurse(results);
+			var results = this.splitPolygon(polygon,scanningVerticies,0,i);
+			this.recurse(results,triangles);
 
 			return;
 		}
@@ -420,30 +412,31 @@ function triangulateMonotonePolygon(polygon,triangles){
 	
 	
 	for (i = 0; i < scanningVerticies.length-1; i++){
-		if (validEdge(polygon,scanningVerticies,scanningVerticies.length-1,i)){
+		if (this.validEdge(polygon,scanningVerticies,scanningVerticies.length-1,i)){
 			stack.slice(j,1);
-			var results = splitPolygon(polygon,scanningVerticies,scanningVerticies.length-1,i);
-			recurse(results);
+			var results = this.splitPolygon(polygon,scanningVerticies,scanningVerticies.length-1,i);
+			this.recurse(results,triangles);
 			
 			return;
 		}
 	}
 
-	function recurse(results){
-		if (results.length>0){
-			if (results[0].length==3){
-				triangles.push(results[0])
-			}else{
-				triangulateMonotonePolygon(results[0],triangles);
-			}
+
+}
+
+PolTri.prototype.recurse = function (results,triangles){
+	if (results.length>0){
+		if (results[0].length==3){
+			triangles.push(results[0])
+		}else{
+			this.triangulateMonotonePolygon(results[0],triangles);
 		}
-		if (results.length>1){
-			if (results[1].length==3){
-				triangles.push(results[1])
-			}else{
-				triangulateMonotonePolygon(results[1],triangles);
-			}
+	}
+	if (results.length>1){
+		if (results[1].length==3){
+			triangles.push(results[1])
+		}else{
+			this.triangulateMonotonePolygon(results[1],triangles);
 		}
 	}
 }
-

@@ -110,6 +110,8 @@
 	var line2 = "#68cef0";
 	var line3 = "#626b8e";
 
+	var polTri = new PolTri()
+
 	var poly0 =[{"x":159,"y":52},{"x":145,"y":55},{"x":128,"y":63},{"x":119,"y":72},{"x":120,"y":84},{"x":123,"y":95},{"x":130,"y":103},{"x":141,"y":106},{"x":152,"y":100},{"x":155,"y":88},{"x":157,"y":78},{"x":170,"y":75},{"x":179,"y":81},{"x":182,"y":99},{"x":182,"y":110},{"x":175,"y":120},{"x":168,"y":131},{"x":158,"y":140},{"x":148,"y":146},{"x":139,"y":151},{"x":130,"y":158},{"x":125,"y":168},{"x":125,"y":193},{"x":133,"y":203},{"x":144,"y":201},{"x":152,"y":190},{"x":159,"y":173},{"x":165,"y":163},{"x":171,"y":154},{"x":180,"y":147},{"x":186,"y":164},{"x":186,"y":175},{"x":176,"y":197},{"x":169,"y":206},{"x":158,"y":220},{"x":148,"y":230},{"x":135,"y":235},{"x":121,"y":236},{"x":104,"y":235},{"x":91,"y":232},{"x":80,"y":236},{"x":67,"y":244},{"x":66,"y":255},{"x":79,"y":269},{"x":98,"y":272},{"x":116,"y":272},{"x":127,"y":272},{"x":140,"y":270},{"x":160,"y":265},{"x":170,"y":261},{"x":190,"y":249},{"x":202,"y":245},{"x":213,"y":247},{"x":216,"y":258},{"x":219,"y":271},{"x":229,"y":272},{"x":246,"y":266},{"x":254,"y":255},{"x":258,"y":243},{"x":259,"y":230},{"x":259,"y":218},{"x":252,"y":207},{"x":232,"y":204},{"x":221,"y":211},{"x":207,"y":209},{"x":208,"y":189},{"x":218,"y":176},{"x":229,"y":171},{"x":239,"y":163},{"x":241,"y":151},{"x":242,"y":137},{"x":238,"y":126},{"x":230,"y":118},{"x":217,"y":120},{"x":211,"y":135},{"x":217,"y":149},{"x":203,"y":142},{"x":201,"y":122},{"x":202,"y":108},{"x":209,"y":91},{"x":211,"y":81},{"x":205,"y":69},{"x":189,"y":55}]; 
 
 	var poly1 =[{"x":150,"y":50},{"x":100,"y":50},{"x":125,"y":100},{"x":125,"y":150},{"x":100,"y":200},{"x":125,"y":225},{"x":125,"y":250},{"x":100,"y":275},{"x":150,"y":275}]; 
@@ -120,41 +122,41 @@
 
 	function tick(){
 
-		var dp0 = douglasPeucker(poly0,1.1);
-		var dp1 = douglasPeucker(poly0,1.2);
+		var dp0 = polTri.reduceByDistance(poly0,1.1);
+		var dp1 = polTri.reduceByDistance(poly0,1.2);
 
 		var monotones0 = []
-		recursiveSplit(dp0,monotones0);
+		polTri.recursiveSplit(dp0,monotones0);
 		drawPolygons(contexts[0],monotones0,false,line2);
 		drawPolygons(contexts[0],[dp0],true,line1,true);
 
 		var monotones1 = []
-		recursiveSplit(dp1,monotones1);
+		polTri.recursiveSplit(dp1,monotones1);
 		drawPolygons(contexts[1],monotones1,false,line2);
 		drawPolygons(contexts[1],[dp1],true,line1,true);
 
 		var monotones2 = []
-		recursiveSplit(poly1,monotones2);
+		polTri.recursiveSplit(poly1,monotones2);
 		drawPolygons(contexts[2],monotones2,false,line2);
 		drawPolygons(contexts[2],[poly1],true,line1,true);
 
 
 
 		var monotones3 = []
-		recursiveSplit(poly2,monotones3);
+		polTri.recursiveSplit(poly2,monotones3);
 		drawPolygons(contexts[3],monotones3,false,line2);
 		drawPolygons(contexts[3],[poly2],true,line1,true);
 
 		var tris = [];
 		for (var i = 0; i < monotones3.length; i++){			
-			triangulateMonotonePolygon(monotones3[i],tris);
+			polTri.triangulateMonotonePolygon(monotones3[i],tris);
 		}
 		drawPolygons(contexts[4],tris,false,line3);
 		drawPolygons(contexts[4],monotones3,false,line2,true);
 		drawPolygons(contexts[4],[poly2],true,line1,true);
 
 		var monotones4 = []
-		recursiveSplit(poly3,monotones4);
+		polTri.recursiveSplit(poly3,monotones4);
 		drawPolygons(contexts[5],monotones4,false,line2);
 		drawPolygons(contexts[5],[poly3],true,line1,true);
 
