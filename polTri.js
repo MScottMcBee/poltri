@@ -1,175 +1,18 @@
 "use strict";
 function PolTri(){}
 
-PolTri.prototype.doesLineIntersect = function (a1,a2,b1,b2){
-	var result;
-	
-	var ua_t = (b2.x - b1.x) * (a1.y - b1.y) - (b2.y - b1.y) * (a1.x - b1.x);
-	var ub_t = (a2.x - a1.x) * (a1.y - b1.y) - (a2.y - a1.y) * (a1.x - b1.x);
-	var u_b  = (b2.y - b1.y) * (a2.x - a1.x) - (b2.x - b1.x) * (a2.y - a1.y);
-	
-	if ( u_b != 0 ) {
-		var ua = ua_t / u_b;
-		var ub = ub_t / u_b;
-		
-		if ( 0 <= ua && ua <= 1 && 0 <= ub && ub <= 1 ) {
-			result = true
-		}
-	}
-	
-	return result;
+PolTri.prototype.triangulate = function (polygon){
+			var monotonePolygons = [];
+			var triangles = [];
+			var i;
+
+			this.recursiveSplit(polygon,monotonePolygons);			
+			for (i = 0; i < monotonePolygons.length; i++){			
+				this.triangulateMonotonePolygon(monotonePolygons[i], triangles);
+			}
+
+			return triangles;
 }
-
-PolTri.prototype.dist = function (a, b){
-	return Math.sqrt((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y));
-}
-
-PolTri.prototype.segmentDistToPoint = function (p, segA, segB){
-	var p2;
-	var u;
-	var x;
-	var y;
-	var dx;
-	var dy;
-	var dist;
-
-	p2 = {x: segB.x - segA.x, y: segB.y - segA.y};
-	u = ((p.x - segA.x) * p2.x + (p.y - segA.y) * p2.y) / (p2.x * p2.x + p2.y * p2.y);
-	
-	if (u > 1){
-		u = 1;
-	}else if (u < 0){
-		u = 0;
-	}
-
-	x = segA.x + u * p2.x;
-	y = segA.y + u * p2.y;
-	
-	dx = x - p.x;
-	dy = y - p.y;
-	
-	dist = Math.sqrt(dx*dx + dy*dy);
-	
-	return dist;
-}
-
-//douglasPeucker
-PolTri.prototype.reduceByDistance = function (points, distance){
-	var results = [];
-	var r1;
-	var r2;
-	var largestDistance = 0;
-	var pivotIndex = 0;
-	var i;
-	var segmentDistance;
-
-	for (i = 1; i < points.length - 1; i++) {
-		segmentDistance = this.segmentDistToPoint(points[i], points[0], points[points.length - 1]) ;
-		if ( segmentDistance > largestDistance ) {
-			pivotIndex = i;
-			largestDistance = segmentDistance;
-		}
-	}
-	if ( largestDistance > distance ) {
-		r1 = this.reduceByDistance(points.slice(0, pivotIndex + 1), distance);
-		r2 = this.reduceByDistance(points.slice(pivotIndex), distance);
-		
-		results = r1.concat(r2.slice(1));
-	} else {
-		results.push(points[0]);
-		results.push(points[points.length - 1]);
-	}
-	return results;
-}
-
-//visvalingamWhyatt
-PolTri.prototype.reduceByPercentage = function (points, percentage){
-	var referenceTriangles = [];
-	var workingTriangles = [];
-	var results = [];
-	var i;
-	var vwTriangle;
-	var targetPointCount;
-	var referenceIndex;
-	var relRefInd1, relRefInd2;
-	var sortFunction = function(a,b){ return b.distance - a.distance };
-
-
-	vwTriangle = this.createVWTriangle(points[points.length - 1], points[0], points[1]);
-	if(vwTriangle){
-		referenceTriangles.push(vwTriangle);
-	}
-	for (i = 0; i < points.length - 2; i++) {
-		vwTriangle = this.createVWTriangle(points[i], points[i + 1], points[i + 2]);
-		if(vwTriangle){
-			referenceTriangles.push(vwTriangle);
-		}
-	}
-	vwTriangle = this.createVWTriangle(points[points.length - 2], points[points.length - 1], points[0]);
-	if(vwTriangle){
-		referenceTriangles.push(vwTriangle);
-	}
-
-
-	targetPointCount = referenceTriangles.length * percentage;
-	if (targetPointCount < 3){
-		targetPointCount = 3;
-	}
-
-	while (referenceTriangles.length > targetPointCount){
-		workingTriangles = referenceTriangles.concat();
-		workingTriangles.sort(sortFunction);
-		referenceIndex = referenceTriangles.indexOf(workingTriangles[workingTriangles.length - 1]);
-		workingTriangles = workingTriangles.splice(0, workingTriangles.length - 1);
-		referenceTriangles.splice(referenceIndex, 1);
-		
-		if (referenceIndex == referenceTriangles.length){
-			referenceIndex = 0;
-		}
-		relRefInd1 = referenceIndex - 2;
-		relRefInd2 = referenceIndex - 1;
-		if (relRefInd1 < 0){
-			relRefInd1 += referenceTriangles.length;
-		}
-		if (relRefInd2 < 0){
-			relRefInd2 += referenceTriangles.length;
-		}
-		referenceTriangles[relRefInd2] = this.createVWTriangle(referenceTriangles[relRefInd1].point, referenceTriangles[relRefInd2].point, referenceTriangles[referenceIndex].point);
-		
-		relRefInd1 = referenceIndex - 1;
-		relRefInd2 = referenceIndex + 1;
-		if (relRefInd1 < 0){
-			relRefInd1 += referenceTriangles.length;
-		}
-		if (relRefInd2 >= referenceTriangles.length){
-			relRefInd2-=referenceTriangles.length;
-		}
-		
-		referenceTriangles[referenceIndex] = this.createVWTriangle(referenceTriangles[relRefInd1].point, referenceTriangles[referenceIndex].point, referenceTriangles[relRefInd2].point);
-	}
-
-	for (i = 0; i < referenceTriangles.length; i++) {
-		results.push(referenceTriangles[i].point);
-	}
-
-	return results;
-}
-
-PolTri.prototype.createVWTriangle = function (p1, p2, p3){
-		var base = this.dist(p1,p3);
-		var height = this.segmentDistToPoint(p2,p1,p3);
-		var newVWTriangle = {};
-		var area = base*height/2;
-		
-		if (area != NaN){
-			newVWTriangle.distance = area;
-			newVWTriangle.point = p2;
-			newVWTriangle.order = i+1;
-			return newVWTriangle;
-		}
-		console.log("Bad VWTriangle!");
-		return null;
-	}
 
 PolTri.prototype.recursiveSplit = function (polygon, output){
 	var divided;
@@ -183,7 +26,6 @@ PolTri.prototype.recursiveSplit = function (polygon, output){
 		output.push(polygon);
 	}
 }
-
 
 PolTri.prototype.splitSimplePolygon = function (polygon){
 	var i;
@@ -310,10 +152,6 @@ PolTri.prototype.validEdge = function (polygon, sortedVerticies, baseIndex, chec
 	}
 	
 	return true;
-}
-
-PolTri.prototype.pointEquals = function (a, b){
-	return a.x == b.x && a.y == b.y;
 }
 
 PolTri.prototype.splitPolygon = function (polygon, sortedVerticies, indexA, indexB){
@@ -476,3 +314,182 @@ PolTri.prototype.recurse = function (results, triangles){
 		}
 	}
 }
+
+
+
+PolTri.prototype.doesLineIntersect = function (a1,a2,b1,b2){
+	var result;
+	
+	var ua_t = (b2.x - b1.x) * (a1.y - b1.y) - (b2.y - b1.y) * (a1.x - b1.x);
+	var ub_t = (a2.x - a1.x) * (a1.y - b1.y) - (a2.y - a1.y) * (a1.x - b1.x);
+	var u_b  = (b2.y - b1.y) * (a2.x - a1.x) - (b2.x - b1.x) * (a2.y - a1.y);
+	
+	if ( u_b != 0 ) {
+		var ua = ua_t / u_b;
+		var ub = ub_t / u_b;
+		
+		if ( 0 <= ua && ua <= 1 && 0 <= ub && ub <= 1 ) {
+			result = true
+		}
+	}
+	
+	return result;
+}
+
+PolTri.prototype.dist = function (a, b){
+	return Math.sqrt((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y));
+}
+
+
+PolTri.prototype.segmentDistToPoint = function (p, segA, segB){
+	var p2;
+	var u;
+	var x;
+	var y;
+	var dx;
+	var dy;
+	var dist;
+
+	p2 = {x: segB.x - segA.x, y: segB.y - segA.y};
+	u = ((p.x - segA.x) * p2.x + (p.y - segA.y) * p2.y) / (p2.x * p2.x + p2.y * p2.y);
+	
+	if (u > 1){
+		u = 1;
+	}else if (u < 0){
+		u = 0;
+	}
+
+	x = segA.x + u * p2.x;
+	y = segA.y + u * p2.y;
+	
+	dx = x - p.x;
+	dy = y - p.y;
+	
+	dist = Math.sqrt(dx*dx + dy*dy);
+	
+	return dist;
+}
+
+PolTri.prototype.pointEquals = function (a, b){
+	return a.x == b.x && a.y == b.y;
+}
+
+
+
+//douglasPeucker
+PolTri.prototype.reduceByDistance = function (points, distance){
+	var results = [];
+	var r1;
+	var r2;
+	var largestDistance = 0;
+	var pivotIndex = 0;
+	var i;
+	var segmentDistance;
+
+	for (i = 1; i < points.length - 1; i++) {
+		segmentDistance = this.segmentDistToPoint(points[i], points[0], points[points.length - 1]) ;
+		if ( segmentDistance > largestDistance ) {
+			pivotIndex = i;
+			largestDistance = segmentDistance;
+		}
+	}
+	if ( largestDistance > distance ) {
+		r1 = this.reduceByDistance(points.slice(0, pivotIndex + 1), distance);
+		r2 = this.reduceByDistance(points.slice(pivotIndex), distance);
+		
+		results = r1.concat(r2.slice(1));
+	} else {
+		results.push(points[0]);
+		results.push(points[points.length - 1]);
+	}
+	return results;
+}
+
+//visvalingamWhyatt
+PolTri.prototype.reduceByPercentage = function (points, percentage){
+	var referenceTriangles = [];
+	var workingTriangles = [];
+	var results = [];
+	var i;
+	var vwTriangle;
+	var targetPointCount;
+	var referenceIndex;
+	var relRefInd1, relRefInd2;
+	var sortFunction = function(a,b){ return b.distance - a.distance };
+
+
+	vwTriangle = this.createVWTriangle(points[points.length - 1], points[0], points[1]);
+	if(vwTriangle){
+		referenceTriangles.push(vwTriangle);
+	}
+	for (i = 0; i < points.length - 2; i++) {
+		vwTriangle = this.createVWTriangle(points[i], points[i + 1], points[i + 2]);
+		if(vwTriangle){
+			referenceTriangles.push(vwTriangle);
+		}
+	}
+	vwTriangle = this.createVWTriangle(points[points.length - 2], points[points.length - 1], points[0]);
+	if(vwTriangle){
+		referenceTriangles.push(vwTriangle);
+	}
+
+
+	targetPointCount = referenceTriangles.length * percentage;
+	if (targetPointCount < 3){
+		targetPointCount = 3;
+	}
+
+	while (referenceTriangles.length > targetPointCount){
+		workingTriangles = referenceTriangles.concat();
+		workingTriangles.sort(sortFunction);
+		referenceIndex = referenceTriangles.indexOf(workingTriangles[workingTriangles.length - 1]);
+		workingTriangles = workingTriangles.splice(0, workingTriangles.length - 1);
+		referenceTriangles.splice(referenceIndex, 1);
+		
+		if (referenceIndex == referenceTriangles.length){
+			referenceIndex = 0;
+		}
+		relRefInd1 = referenceIndex - 2;
+		relRefInd2 = referenceIndex - 1;
+		if (relRefInd1 < 0){
+			relRefInd1 += referenceTriangles.length;
+		}
+		if (relRefInd2 < 0){
+			relRefInd2 += referenceTriangles.length;
+		}
+		referenceTriangles[relRefInd2] = this.createVWTriangle(referenceTriangles[relRefInd1].point, referenceTriangles[relRefInd2].point, referenceTriangles[referenceIndex].point);
+		
+		relRefInd1 = referenceIndex - 1;
+		relRefInd2 = referenceIndex + 1;
+		if (relRefInd1 < 0){
+			relRefInd1 += referenceTriangles.length;
+		}
+		if (relRefInd2 >= referenceTriangles.length){
+			relRefInd2-=referenceTriangles.length;
+		}
+		
+		referenceTriangles[referenceIndex] = this.createVWTriangle(referenceTriangles[relRefInd1].point, referenceTriangles[referenceIndex].point, referenceTriangles[relRefInd2].point);
+	}
+
+	for (i = 0; i < referenceTriangles.length; i++) {
+		results.push(referenceTriangles[i].point);
+	}
+
+	return results;
+}
+
+PolTri.prototype.createVWTriangle = function (p1, p2, p3){
+		var base = this.dist(p1,p3);
+		var height = this.segmentDistToPoint(p2,p1,p3);
+		var newVWTriangle = {};
+		var area = base*height/2;
+		
+		if (area != NaN){
+			newVWTriangle.distance = area;
+			newVWTriangle.point = p2;
+			newVWTriangle.order = i+1;
+			return newVWTriangle;
+		}
+		console.log("Bad VWTriangle!");
+		return null;
+	}
