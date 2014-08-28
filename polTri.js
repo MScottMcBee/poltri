@@ -94,9 +94,9 @@ PolTri.prototype.validEdge = function (polygon, sortedVerticies, baseIndex, chec
 	var i;
 	var nextIndex;
 	var doIntersect;
-	var origin;
+	var testOriginA, testOriginB;
 	var testPoint;
-	var count;
+	var countA, countB;
 	var offset;
 
 	// If we're out of bounds, it's not valid
@@ -131,9 +131,11 @@ PolTri.prototype.validEdge = function (polygon, sortedVerticies, baseIndex, chec
 		}
 	}
 	
-	origin = {x:0,y:0};
-	testPoint = {};
-	count = 0;
+	
+	testPoint = {x: pointA.x + ((pointB.x - pointA.x) / 2), y: pointA.y + ((pointB.y - pointA.y) / 2)};
+	testOriginA = {x: -10, y: -10};
+	testOriginB = {x:testPoint.x, y: -10};
+
 	for (i = 0; i < polygon.length ; i++){
 		offset = i + 1;
 		if (offset >=  polygon.length){
@@ -142,12 +144,15 @@ PolTri.prototype.validEdge = function (polygon, sortedVerticies, baseIndex, chec
 		
 		testPoint.x = pointA.x + ((pointB.x - pointA.x) / 2);
 		testPoint.y = pointA.y + ((pointB.y - pointA.y) / 2);
-		if (this.doesLineIntersect(polygon[i], polygon[offset], origin, testPoint)){
-			count++;
+		if (this.doesLineIntersect(polygon[i], polygon[offset], testPoint, testOriginA)){
+			countA++;
+		}
+		if (this.doesLineIntersect(polygon[i], polygon[offset], testPoint, testOriginB)){
+			countB++;
 		}
 	}
 	
-	if (count % 2 == 0){
+	if (countA % 2 == 0 && countB & 2 == 0){
 		return false;
 	}
 	
@@ -247,9 +252,9 @@ PolTri.prototype.triangulateMonotonePolygon = function (polygon, triangles){
 			}
 		}
 		
-		if (i == scanningVerticies.length - 1){
-			sameTrack = false;
-		}
+		// if (i == scanningVerticies.length - 1){
+		// 	sameTrack = false;
+		// }
 		
 		
 		if (sameTrack){	
