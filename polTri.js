@@ -330,7 +330,7 @@ PolTri.prototype.doesLineIntersect = function (a1, a2, b1, b2){
 		var ua = ua_t / u_b;
 		var ub = ub_t / u_b;
 		
-		if ( 0 <= ua && ua <= 1 && 0 <= ub && ub <= 1 ) {
+		if ( 0 < ua && ua <= 1 && 0 < ub && ub <= 1 ) {
 			return true;
 		}
 	}
