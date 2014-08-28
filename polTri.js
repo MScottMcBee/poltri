@@ -94,7 +94,7 @@ PolTri.prototype.validEdge = function (polygon, sortedVerticies, baseIndex, chec
 	var i;
 	var nextIndex;
 	var doIntersect;
-	var testOriginA, testOriginB;
+	var originA, originB;
 	var testPoint;
 	var countA, countB;
 	var offset;
@@ -132,27 +132,31 @@ PolTri.prototype.validEdge = function (polygon, sortedVerticies, baseIndex, chec
 	}
 	
 	
-	testPoint = {x: pointA.x + ((pointB.x - pointA.x) / 2), y: pointA.y + ((pointB.y - pointA.y) / 2)};
-	testOriginA = {x: -10, y: -10};
-	testOriginB = {x:testPoint.x, y: -10};
+	testPoint = {};
+	testPoint.x = pointA.x + ((pointB.x - pointA.x) / 2);
+	testPoint.y = pointA.y + ((pointB.y - pointA.y) / 2);
 
+	originA = {x: -10, y: -10};
+	originB = {x: testPoint.x, y: 0};
+
+	countA = 0;
+	countB = 0;
 	for (i = 0; i < polygon.length ; i++){
 		offset = i + 1;
 		if (offset >=  polygon.length){
 			offset = 0;
 		}
 		
-		testPoint.x = pointA.x + ((pointB.x - pointA.x) / 2);
-		testPoint.y = pointA.y + ((pointB.y - pointA.y) / 2);
-		if (this.doesLineIntersect(polygon[i], polygon[offset], testPoint, testOriginA)){
+
+		if (this.doesLineIntersect(polygon[i], polygon[offset], originA, testPoint)){
 			countA++;
 		}
-		if (this.doesLineIntersect(polygon[i], polygon[offset], testPoint, testOriginB)){
+		if (this.doesLineIntersect(polygon[i], polygon[offset], originB, testPoint)){
 			countB++;
 		}
 	}
 	
-	if (countA % 2 == 0 && countB & 2 == 0){
+	if (countA % 2 == 0 ){
 		return false;
 	}
 	
@@ -252,11 +256,6 @@ PolTri.prototype.triangulateMonotonePolygon = function (polygon, triangles){
 			}
 		}
 		
-		// if (i == scanningVerticies.length - 1){
-		// 	sameTrack = false;
-		// }
-		
-		
 		if (sameTrack){	
 			for (j = i + 1; j < scanningVerticies.length; j++){
 				if (this.validEdge(polygon, scanningVerticies, i, j)){
@@ -322,9 +321,7 @@ PolTri.prototype.recurse = function (results, triangles){
 
 
 
-PolTri.prototype.doesLineIntersect = function (a1,a2,b1,b2){
-	var result;
-	
+PolTri.prototype.doesLineIntersect = function (a1, a2, b1, b2){
 	var ua_t = (b2.x - b1.x) * (a1.y - b1.y) - (b2.y - b1.y) * (a1.x - b1.x);
 	var ub_t = (a2.x - a1.x) * (a1.y - b1.y) - (a2.y - a1.y) * (a1.x - b1.x);
 	var u_b  = (b2.y - b1.y) * (a2.x - a1.x) - (b2.x - b1.x) * (a2.y - a1.y);
@@ -334,11 +331,11 @@ PolTri.prototype.doesLineIntersect = function (a1,a2,b1,b2){
 		var ub = ub_t / u_b;
 		
 		if ( 0 <= ua && ua <= 1 && 0 <= ub && ub <= 1 ) {
-			result = true
+			return true;
 		}
 	}
 	
-	return result;
+	return false;
 }
 
 PolTri.prototype.dist = function (a, b){
