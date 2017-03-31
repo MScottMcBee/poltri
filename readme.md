@@ -18,6 +18,7 @@ PolTri is a simple polygon triangulation library for Javascript. Simple import, 
   var triangulatedSquare = polTri.triangulate(square);
 
   console.log(JSON.stringify(triangulatedSquare));
+  
 /* RETURNS
   [ 
     [
